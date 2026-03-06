@@ -21,13 +21,20 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Skip when secrets are missing
+        if: ${{ secrets.GOOGLE_CALENDAR_API_KEY == '' || secrets.GOOGLE_CALENDAR_ID == '' }}
+        run: |
+          echo "Skipping update: configure GOOGLE_CALENDAR_API_KEY and GOOGLE_CALENDAR_ID in repository secrets."
+
       - name: Generate availability.json from Google Calendar
+        if: ${{ secrets.GOOGLE_CALENDAR_API_KEY != '' && secrets.GOOGLE_CALENDAR_ID != '' }}
         env:
           GOOGLE_CALENDAR_API_KEY: ${{ secrets.GOOGLE_CALENDAR_API_KEY }}
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
         run: python scripts/update_availability.py
 
       - name: Commit and push if changed
+        if: ${{ secrets.GOOGLE_CALENDAR_API_KEY != '' && secrets.GOOGLE_CALENDAR_ID != '' }}
         run: |
           if git diff --quiet -- availability.json; then
             echo "No changes in availability.json"
