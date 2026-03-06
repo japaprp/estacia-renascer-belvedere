@@ -5,6 +5,7 @@ import os
 from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, quote
 from urllib.request import urlopen
 
@@ -79,8 +80,16 @@ def fetch_events(calendar_id: str, api_key: str, time_min: str, time_max: str) -
             params["pageToken"] = page_token
 
         url = f"{base}?{urlencode(params)}"
-        with urlopen(url) as response:
-            payload = json.loads(response.read().decode("utf-8"))
+        try:
+            with urlopen(url) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+        except HTTPError as exc:
+            details = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(
+                f"Google Calendar API HTTP {exc.code}. Response: {details}"
+            ) from exc
+        except URLError as exc:
+            raise RuntimeError(f"Google Calendar API network error: {exc.reason}") from exc
 
         items = payload.get("items") or []
         events.extend(items)
