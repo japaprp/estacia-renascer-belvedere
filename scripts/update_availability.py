@@ -96,12 +96,9 @@ def main() -> int:
     api_key = os.getenv("GOOGLE_CALENDAR_API_KEY", "").strip()
     calendar_id = os.getenv("GOOGLE_CALENDAR_ID", "").strip()
 
-    if not api_key:
-        print("Missing GOOGLE_CALENDAR_API_KEY")
-        return 1
-    if not calendar_id:
-        print("Missing GOOGLE_CALENDAR_ID")
-        return 1
+    if not api_key or not calendar_id:
+        print("Skipping update: missing GOOGLE_CALENDAR_API_KEY or GOOGLE_CALENDAR_ID")
+        return 0
 
     today = datetime.now(timezone.utc).date()
     range_start = datetime.combine(today - timedelta(days=365), time.min, tzinfo=timezone.utc)
