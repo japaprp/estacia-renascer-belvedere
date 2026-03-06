@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Espaço para eventos, casamentos, festas e retiros em Ribeirão Preto. Conheça a Estância Renascer Belvedere!">
+    <title>Estância Renascer Belvedere - Espaço de Eventos</title>
+    <link rel="icon" href="imagens/favicon.ico" type="image/x-icon">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Estância Renascer Belvedere - Espaço de Eventos">
+    <meta property="og:description" content="Espaço para eventos, casamentos, festas e retiros em Ribeirão Preto. Conheça a Estância Renascer Belvedere!">
+    <meta property="og:image" content="https://japaprp.github.io/estancia-site/imagens/principal.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://japaprp.github.io/estancia-site/">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+    <style>
+      .hero {
+        background: linear-gradient(
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+          ),
+          url(
+            'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+          );
+        background-size: cover;
+        background-position: center;
+        height: 80vh;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      }
+
+      .gallery-item {
+        transition: transform 0.3s ease, box-shadow 0.3s;
+      }
+      .gallery-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      }
+      .gallery-item img {
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .gallery-item:hover img {
+        transform: scale(1.08);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      }
+
+      .testimonial-card {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+      section, .gallery-item, .testimonial-card, .faq {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      }
+
+      .contact-info i {
+        transition: all 0.3s ease;
+      }
+      .contact-info:hover i {
+        transform: scale(1.2);
+      }
+      .btn-anim {
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .btn-anim:hover {
+        transform: scale(1.07);
+        box-shadow: 0 4px 16px rgba(67,160,71,0.15);
+      }
+
+      /* Rodapé com degrade */
+      footer.bg-gray-900 {
+        background: linear-gradient(90deg, #33691e 0%, #558b2f 100%);
+      }
+      /* Animação de gradiente camaleão */
+      @keyframes camaleaoGradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .bg-camaleao-animado {
+        background: linear-gradient(
+          270deg,
+          #7cb342,
+          #c0ca33,
+          #42a5f5,
+          #7cb342
+        );
+        background-size: 600% 600%;
+        animation: camaleaoGradient 15s ease infinite;
+      }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 dark:bg-gray-900">
+  <!-- Cabeçalho\Navegação -->
+  <header class="fixed w-full bg-white/90 backdrop-blur shadow-md z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center">
+        <i class="fas fa-leaf text-green-600 dark:text-green-400 text-3xl mr-2"></i>
+        <h1 class="text-xl font-bold text-gray-800 dark:text-white">
+          Estância Renascer <span class="text-green-600 dark:text-green-400">Belvedere</span>
+        </h1>
+      </div>
+      <button id="toggle-dark" aria-label="Alternar modo escuro" class="ml-4 px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200">
+        <i class="fas fa-moon"></i>
+      </button>
+      <nav class="hidden md:flex space-x-8">
+        <a href="#home" class="text-gray-800 hover:text-green-600 font-medium"
+          >Início</a
+        >
+        <a href="#about" class="text-gray-800 hover:text-green-600 font-medium"
+          >Sobre</a
+        >
+        <a href="#services" class="text-gray-800 hover:text-green-600 font-medium"
+          >Serviços</a
+        >
+        <a href="#gallery" class="text-gray-800 hover:text-green-600 font-medium"
+          >Galeria</a
+        >
+        <a href="#contact" class="text-gray-800 hover:text-green-600 font-medium"
+          >Contato</a
+        >
+      </nav>
+      <button class="md:hidden text-gray-800" id="menu-toggle">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+    </div>
+    <!--  Menu movél -->
+    <div
+      class="md:hidden hidden bg-white w-full py-4 px-4 shadow-lg"
+      id="mobile-menu"
+    >
+      <div class="flex flex-col space-y-4">
+        <a href="#home" class="text-gray-800 hover:text-green-600 font-medium"
+          >Início</a
+        >
+        <a href="#about" class="text-gray-800 hover:text-green-600 font-medium"
+          >Sobre</a
+        >
+        <a href="#services" class="text-gray-800 hover:text-green-600 font-medium"
+          >Serviços</a
+        >
+        <a href="#gallery" class="text-gray-800 hover:text-green-600 font-medium"
+          >Galeria</a
+        >
+        <a href="#contact" class="text-gray-800 hover:text-green-600 font-medium"
+          >Contato</a
+        >
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section
+    id="home"
+    class="hero flex items-center justify-center text-white pt-20"
+    data-aos="fade-up"
+  >
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6">Seu Evento Inesquecível</h1>
+      <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+        Um espaço encantador para celebrar os momentos mais especiais da sua
+        vida
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="#contact"
+          class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim reserve-btn"
+          aria-label="Reservar agora"
+        >Reserve Agora</a>
+        <a
+          href="#gallery"
+          class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-800 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim"
+          aria-label="Conheça o espaço"
+        >Conheça o Espaço</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seleção Sobre -->
+  <section id="about" class="py-20 bg-camaleao-animado text-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Sobre Nós</h2>
+        <div class="w-20 h-1 bg-white mx-auto"></div>
+      </div>
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="lg:w-1/2">
+          <img
+            src="imagens/principal.jpg"
+            alt="Estância Renascer Belvedere"
+            class="rounded-lg shadow-xl w-full h-auto"
+          />
+        </div>
+        <div class="lg:w-1/2">
+          <h3 class="text-2xl font-bold mb-6">Bem-vindo à Estância Renascer Belvedere</h3>
+          <p class="mb-6">
+            Localizada em um ambiente tranquilo e cercado pela natureza, a Estância
+            Renascer Belvedere é o local perfeito para realizar seus eventos especiais.
+            Está planejando um casamento, aniversário ou um dia de lazer com a família?
+            Nossa chácara oferece o ambiente perfeito para criar memórias inesquecíveis!
+            Imagine celebrar cercado pela beleza da natureza, com espaço amplo e muito
+            conforto, para receber seus convidados com toda a tranquilidade. seu evento
+            será inesquecível.
+          </p>
+          <p class="mb-6">
+            Nossa equipe está pronta para transformar seu sonho em realidade.
+          </p>
+          <div class="grid grid-cols-2 gap-4 text-white">
+            <div class="flex items-center">
+              <i class="fas fa-check-circle text-white text-xl mr-2"></i>
+              <span>Espaço amplo</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check-circle text-white text-xl mr-2"></i>
+              <span>Estacionamento</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check-circle text-white text-xl mr-2"></i>
+              <span>Cozinha</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-check-circle text-white text-xl mr-2"></i>
+              <span>Área verde</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seleção de Serviços -->
+  <section id="services" class="py-20 bg-gray-100" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          Nossos Serviços
+        </h2>
+        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Serviço: Casamentos -->
+        <div
+          class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
+        >
+          <div class="text-pink-500 text-4xl mb-4">
+            <i class="fas fa-glass-cheers"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Casamentos</h3>
+          <p class="text-gray-600">
+            Um dia especial merece um lugar especial. Oferecemos toda a estrutura
+            para tornar seu casamento inesquecível.
+          </p>
+        </div>
+
+        <!-- Serviço: Festas -->
+        <div
+          class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
+        >
+          <div class="text-yellow-500 text-4xl mb-4">
+            <i class="fas fa-birthday-cake"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Festas</h3>
+          <p class="text-gray-600">
+            Aniversários, formaturas e comemorações em geral. Espaço ideal para
+            reunir familiares e amigos.
+          </p>
+        </div>
+
+        <!-- Serviço: Eventos Corporativos -->
+        <div
+          class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
+        >
+          <div class="text-blue-500 text-4xl mb-4">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Eventos Corporativos</h3>
+          <p class="text-gray-600">
+            Ambiente profissional e acolhedor para reuniões, treinamentos e
+            confraternizações empresariais.
+          </p>
+        </div>
+
+        <!-- Serviço: Eventos Religiosos -->
+        <div
+          class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
+        >
+          <div class="text-purple-600 text-4xl mb-4">
+            <i class="fas fa-church"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Eventos Religiosos</h3>
+          <p class="text-gray-600">
+            Espaço adequado para celebrações religiosas, retiros e encontros
+            espirituais.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--  Seleção Galeria -->
+  <section id="gallery" class="py-20 bg-camaleao-animado text-white" data-aos="fade-up">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Nossa Galeria</h2>
+        <div class="w-20 h-1 bg-white mx-auto"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Galeria Item 1 -->
+        <div class="gallery-item rounded-lg overflow-hidden shadow-md">
+          <a href="imagens/piscina.jpg" class="glightbox" data-gallery="galeria" data-title="Piscina">
+            <img
+              src="imagens/piscina.jpg"
+              alt="Espaço de Eventos"
+              class="w-full h-64 object-cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="p-4 bg-white text-gray-800 rounded-b-lg">
+            <h3 class="font-medium">piscina</h3>
+          </div>
+        </div>
+        <!-- Galeria Item 2 -->
+        <div class="gallery-item rounded-lg overflow-hidden shadow-md">
+          <a href="imagens/lazer.jpeg" class="glightbox" data-gallery="galeria" data-title="Área lazer">
+            <img
+              src="imagens/lazer.jpeg"
+              alt="Área Externa"
+              class="w-full h-64 object-cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="p-4 bg-white text-gray-800 rounded-b-lg">
+            <h3 class="font-medium">Área lazer</h3>
+          </div>
+        </div>
+        <!-- Galeria Item 3 -->
+        <div class="gallery-item rounded-lg overflow-hidden shadow-md">
+          <a href="imagens/cozinha.jpg" class="glightbox" data-gallery="galeria" data-title="Cozinha">
+            <img
+              src="imagens/cozinha.jpg"
+              alt="Cozinha"
+              class="w-full h-64 object-cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="p-4 bg-white text-gray-800 rounded-b-lg">
+            <h3 class="font-medium">Cozinha</h3>
+          </div>
+        </div>
+        <!-- Galeria Item 4 -->
+        <div class="gallery-item rounded-lg overflow-hidden shadow-md">
+          <a href="imagens/churrasqueira.jpeg" class="glightbox" data-gallery="galeria" data-title="Churrasqueira">
+            <img
+              src="imagens/churrasqueira.jpeg"
+              alt="Área Verde"
+              class="w-full h-64 object-cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="p-4 bg-white text-gray-800 rounded-b-lg">
+            <h3 class="font-medium">churrasqueira</h3>
+          </div>
+        </div>
+        <!-- Galeria Item 5 -->
+        <div class="gallery-item rounded-lg overflow-hidden shadow-md">
+          <a href="imagens/gramado.jpg" class="glightbox" data-gallery="galeria" data-title="Gramado e Vestiário">
+            <img
+              src="imagens/gramado.jpg"
+              alt="Gramado e Vestiário"
+              class="w-full h-64 object-cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="p-4 bg-white text-gray-800 rounded-b-lg">
+            <h3 class="font-medium">Gramado e Vestiário</h3>
+          </div>
+        </div>
+        <!-- Galeria Item 6 -->
+        <div class="gallery-item rounded-lg overflow-hidden shadow-md">
+          <a href="imagens/casa.jpg" class="glightbox" data-gallery="galeria" data-title="Casa">
+            <img
+              src="imagens/casa.jpg"
+              alt="Evento"
+              class="w-full h-64 object-cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="p-4 bg-white text-gray-800 rounded-b-lg">
+            <h3 class="font-medium">Casa</h3>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-10">
+        <a
+          href="#contact"
+          class="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim"
+          aria-label="Agendar uma visita"
+        >Agende uma Visita</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seleção depoimentos -->
+  <section class="py-20 bg-gray-100" data-aos="fade-up">
+  <!-- FAQ -->
+  <section id="faq" class="py-20 bg-white" data-aos="fade-up">
+    <div class="container mx-auto px-4 max-w-2xl">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Perguntas Frequentes</h2>
+        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
+      </div>
+      <div class="space-y-6">
+        <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Posso visitar a estância antes de fechar a reserva?</summary>
+          <p class="mt-2">Sim! Agende uma visita pelo WhatsApp ou pelo formulário de contato.</p>
+        </details>
+        <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">O local possui estacionamento?</summary>
+          <p class="mt-2">Sim, temos estacionamento amplo para os convidados.</p>
+        </details>
+        <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Quais eventos posso realizar?</summary>
+          <p class="mt-2">Casamentos, aniversários, festas, retiros, eventos corporativos e religiosos.</p>
+        </details>
+        <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Como vejo as datas disponíveis?</summary>
+          <p class="mt-2">Consulte o calendário acima ou entre em contato para confirmar disponibilidade.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          Depoimentos
+        </h2>
+        <div class="w-20 h-1 bg-green-600 mx-auto"></div>
+      </div>
+      <div class="relative">
+        <div id="carousel-depoimentos" class="overflow-hidden">
+          <div class="flex transition-transform duration-700" style="will-change: transform;">
+            <div class="testimonial-card bg-white p-8 rounded-lg min-w-full">
+              <div class="flex items-center mb-4">
+                <div class="text-yellow-400 text-xl mr-2">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="text-gray-800 mb-6">
+                "Realizamos o casamento da nossa filha na Estância Renascer e foi
+                perfeito! O espaço é lindo, a equipe muito atenciosa e tudo saiu
+                exatamente como planejamos."
+              </p>
+              <div class="flex items-center">
+                <div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-800 font-bold mr-3">
+                  M
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800">Maria Silva</h4>
+                  <p class="text-gray-600 text-sm">Mãe da Noiva</p>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card bg-white p-8 rounded-lg min-w-full">
+              <div class="flex items-center mb-4">
+                <div class="text-yellow-400 text-xl mr-2">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="text-gray-800 mb-6">
+                "Fizemos a festa de 15 anos da nossa filha e foi maravilhoso! O
+                espaço é amplo, bem cuidado e a cozinha facilitou muito o trabalho do
+                buffet. Recomendo!"
+              </p>
+              <div class="flex items-center">
+                <div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-800 font-bold mr-3">
+                  J
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800">João Pereira</h4>
+                  <p class="text-gray-600 text-sm">Pai da Aniversariante</p>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card bg-white p-8 rounded-lg min-w-full">
+              <div class="flex items-center mb-4">
+                <div class="text-yellow-400 text-xl mr-2">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="text-gray-800 mb-6">
+                "Organizamos um retiro espiritual aqui e foi uma experiência incrível.
+                A natureza ao redor traz paz e tranquilidade para todos os participantes."
+              </p>
+              <div class="flex items-center">
+                <div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-800 font-bold mr-3">
+                  L
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800">Lúcia Mendes</h4>
+                  <p class="text-gray-600 text-sm">Coordenadora do Retiro</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center gap-2 mt-6">
+          <button aria-label="Depoimento anterior" id="carousel-prev" class="bg-green-600 hover:bg-green-700 text-white w-8 h-8 rounded-full flex items-center justify-center shadow transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-400"><i class="fas fa-chevron-left"></i></button>
+          <button aria-label="Próximo depoimento" id="carousel-next" class="bg-green-600 hover:bg-green-700 text-white w-8 h-8 rounded-full flex items-center justify-center shadow transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-400"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Seleção contato -->
+<section id="contact" class="py-20 bg-camaleao-animado text-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Contato</h2>
+      <div class="w-20 h-1 bg-white mx-auto"></div>
+    </div>
+
+    <div class="mt-16 flex flex-col md:flex-row justify-around text-white contact-info max-w-4xl mx-auto">
+      <div class="mb-8 md:mb-0 flex items-center space-x-4">
+        <i class="fas fa-phone-alt text-3xl"></i>
+        <div>
+          <p class="font-semibold">Telefone / WhatsApp</p>
+          <p><a href="https://wa.me/5516996360162" target="_blank" class="underline hover:text-green-300">(16) 99636-0162 (Márcia)</a></p>
+        </div>
+      </div>
+      <div class="mb-8 md:mb-0 flex items-center space-x-4">
+        <i class="fas fa-map-marker-alt text-3xl"></i>
+        <div class="flex items-center gap-2">
+          <div>
+            <p class="font-semibold">Endereço</p>
+            <p id="endereco-texto">AV Miguel Padulla Ribeirão Preto - SP</p>
+          </div>
+          <button id="copiar-endereco" type="button" title="Copiar endereço" aria-label="Copiar endereço" class="ml-1 px-2 py-1 rounded bg-green-600 hover:bg-green-700 text-white text-xs flex items-center transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <i class="fas fa-envelope text-3xl"></i>
+        <div>
+          <p class="font-semibold">Email</p>
+          <p>
+            <a href="mailto:contato@estanciarenascerbelvedere.com.br" class="underline hover:text-green-300">
+              contato@estanciarenascerbelvedere.com.br
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Maps e Calendário lado a lado -->
+    <div class="mt-12 flex flex-col md:flex-row md:justify-center md:items-start gap-8">
+      <div class="roundedhttps://www.google.com/maps/dir/?api=1&destination=Ribeirão+Preto,+SP-lg overflow-hidden shadow-lg w-full md:w-1/2 lg:w-2/5 flex flex-col justify-stretch h-[400px]" data-aos="zoom-in">
+        <iframe
+          src="https://www.google.com/maps?q=Ribeirão+Preto,+SP&output=embed"
+          class="w-full h-full min-h-[220px]"
+          style="border:0; min-height:220px; height:100%;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Estância Renascer Belvedere"
+        ></iframe>
+        <a href="https://www.google.com/maps/place/Est%C3%A2ncia+Renascer+Belverdere/@-21.2848939,-47.8345391,13z/data=!4m16!1m9!4m8!1m0!1m6!1m2!1s0x94b9b96e2ab9e973:0x144f50ec95ee3d88!2sEst%C3%A2ncia+Renascer+Belverdere!2m2!1d-47.7933393!2d-21.2848989!3m5!1s0x94b9b96e2ab9e973:0x144f50ec95ee3d88!8m2!3d-21.2848989!4d-47.7933393!16s%2Fg%2F11wfrfnpnr?entry=ttu&g_ep=EgoyMDI1MDczMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="mt-3 mx-auto w-max bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition duration-300 btn-anim text-sm shadow focus:outline-none focus:ring-2 focus:ring-green-400" aria-label="Ver rotas para o endereço no Google Maps">
+          <i class="fas fa-route"></i> Ver rotas
+        </a>
+      </div>
+      <div class="bg-white rounded-lg shadow-lg p-6 text-gray-800 w-full md:w-1/2 lg:w-2/5 flex flex-col justify-stretch h-[400px]" data-aos="zoom-in">
+        <h3 class="text-xl font-bold mb-4 text-center">Calendário de Disponibilidade</h3>
+        <div id="calendar"></div>
+        <div class="flex justify-center gap-4 mt-2 text-xs">
+          <div class="flex items-center"><span class="inline-block w-3 h-3 rounded bg-green-200 border border-green-700 mr-1"></span>Disponível</div>
+          <div class="flex items-center"><span class="inline-block w-3 h-3 rounded bg-red-400 border border-red-700 mr-1"></span>Indisponível</div>
+        </div>
+        <p class="text-xs text-center mt-2">Datas em verde estão disponíveis. Para agendar, entre em contato!</p>
+        <p id="calendar-status" class="text-xs text-center mt-2 text-gray-600">Carregando disponibilidade...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Botão flutuante Whatsapp -->
+  <a href="https://wa.me/5516996360162" target="_blank" 
+     class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-50 transition duration-300"
+     aria-label="Abrir WhatsApp">
+      <i class="fab fa-whatsapp text-2xl"></i>
+  </a>
+
+  <!-- Botão voltar ao topo -->
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" 
+    class="fixed bottom-24 right-6 bg-gray-700 hover:bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg z-40 transition duration-300 btn-anim"
+    aria-label="Voltar ao topo">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+
+  <!-- Rodapé -->
+  <footer class="bg-gray-900 text-white py-8 text-center">
+    <p>© 2025 Estância Renascer Belvedere. Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Dark mode toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('toggle-dark');
+      const html = document.documentElement;
+      if (localStorage.getItem('theme') === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+        html.classList.add('dark');
+      }
+      btn.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        if (html.classList.contains('dark')) {
+          localStorage.setItem('theme', 'dark');
+        } else {
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    });
+    // Botão copiar endereço
+    document.addEventListener('DOMContentLoaded', function() {
+      const btnCopiar = document.getElementById('copiar-endereco');
+      const endereco = document.getElementById('endereco-texto');
+      if (btnCopiar && endereco) {
+        btnCopiar.addEventListener('click', function() {
+          navigator.clipboard.writeText(endereco.textContent.trim()).then(() => {
+            btnCopiar.innerHTML = '<i class="fas fa-check"></i>';
+            btnCopiar.classList.add('bg-green-800');
+            setTimeout(() => {
+              btnCopiar.innerHTML = '<i class="fas fa-copy"></i>';
+              btnCopiar.classList.remove('bg-green-800');
+            }, 1200);
+          });
+        });
+      }
+
+      // Feedback visual ao reservar
+      document.querySelectorAll('.reserve-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          btn.classList.add('animate-pulse');
+          setTimeout(() => {
+            btn.classList.remove('animate-pulse');
+            window.location.href = btn.getAttribute('href');
+          }, 500);
+        });
+      });
+    });
+    // Carrossel de depoimentos
+    (function() {
+      const carousel = document.getElementById('carousel-depoimentos');
+      if (!carousel) return;
+      const track = carousel.querySelector('.flex');
+      const slides = Array.from(track.children);
+      let idx = 0;
+      function updateCarousel() {
+        track.style.transform = `translateX(-${idx * 100}%)`;
+      }
+      document.getElementById('carousel-prev').onclick = function() {
+        idx = (idx - 1 + slides.length) % slides.length;
+        updateCarousel();
+      };
+      document.getElementById('carousel-next').onclick = function() {
+        idx = (idx + 1) % slides.length;
+        updateCarousel();
+      };
+      // Auto-slide
+      setInterval(() => {
+        idx = (idx + 1) % slides.length;
+        updateCarousel();
+      }, 6000);
+    })();
+
+    // Menu mobile
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // AOS animações
+    AOS.init();
+    // Lightbox galeria
+    const lightbox = GLightbox({ selector: '.glightbox' });
+
+    // Calendário com Google Calendar (gratuito para calendário público)
+    const calendarEl = document.getElementById('calendar');
+    const calendarStatusEl = document.getElementById('calendar-status');
+    if (calendarEl) {
+      const calendarConfig = {
+        // Crie uma API key no Google Cloud e restrinja para seu domínio (HTTP referrer)
+        apiKey: '',
+        // Exemplo: xxxxx@group.calendar.google.com
+        calendarId: 'estaciarenascerbelvedere@gmail.com'
+      };
+
+      // Fallback caso API não esteja configurada
+      const fallbackBusyDates = [
+        '2026-03-15', '2026-03-22', '2026-04-05'
+      ];
+
+      let busyDates = new Set();
+      let eventsByDate = new Map();
+      let currentYear = new Date().getFullYear();
+      let currentMonth = new Date().getMonth();
+
+      const monthNames = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      ];
+
+      const toDateStr = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const fromDateStr = (str) => {
+        const [y, m, d] = str.split('-').map(Number);
+        return new Date(y, m - 1, d);
+      };
+
+      function setCalendarStatus(message, isError = false) {
+        if (!calendarStatusEl) return;
+        calendarStatusEl.textContent = message;
+        calendarStatusEl.className = `text-xs text-center mt-2 ${isError ? 'text-red-600' : 'text-gray-600'}`;
+      }
+
+      function addEventRange(startDate, endDateExclusive, eventInfo) {
+        const day = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+        while (day < endDateExclusive) {
+          const dateStr = toDateStr(day);
+          busyDates.add(dateStr);
+          if (!eventsByDate.has(dateStr)) eventsByDate.set(dateStr, []);
+          eventsByDate.get(dateStr).push(eventInfo);
+          day.setDate(day.getDate() + 1);
+        }
+      }
+
+      function parseEventToRange(event) {
+        if (event.start?.date && event.end?.date) {
+          const start = fromDateStr(event.start.date);
+          const endExclusive = fromDateStr(event.end.date);
+          const durationDays = Math.max(1, Math.round((endExclusive - start) / 86400000));
+          return {
+            start,
+            endExclusive,
+            info: {
+              summary: event.summary || 'Evento',
+              allDay: true,
+              durationDays
+            }
+          };
+        }
+
+        if (event.start?.dateTime && event.end?.dateTime) {
+          const startDateTime = new Date(event.start.dateTime);
+          const endDateTime = new Date(event.end.dateTime);
+          const start = new Date(startDateTime.getFullYear(), startDateTime.getMonth(), startDateTime.getDate());
+          const endExclusive = new Date(endDateTime.getFullYear(), endDateTime.getMonth(), endDateTime.getDate());
+
+          // Se terminar em horário dentro do dia, inclui esse último dia
+          if (endDateTime > endExclusive) {
+            endExclusive.setDate(endExclusive.getDate() + 1);
+          }
+          if (endExclusive <= start) {
+            endExclusive.setDate(start.getDate() + 1);
+          }
+
+          return {
+            start,
+            endExclusive,
+            info: {
+              summary: event.summary || 'Evento',
+              allDay: false,
+              durationDays: Math.max(1, Math.round((endExclusive - start) / 86400000))
+            }
+          };
+        }
+
+        return null;
+      }
+
+      function getDayDetails(dateStr, isBusy) {
+        if (!isBusy) {
+          return `${dateStr}: disponível.`;
+        }
+        const events = eventsByDate.get(dateStr) || [];
+        if (!events.length) {
+          return `${dateStr}: indisponível.`;
+        }
+        const details = events.slice(0, 3).map((eventInfo) => {
+          if (eventInfo.allDay) {
+            return eventInfo.durationDays > 1
+              ? `• ${eventInfo.summary} (dia inteiro, ${eventInfo.durationDays} dias)`
+              : `• ${eventInfo.summary} (dia inteiro)`;
+          }
+          return `• ${eventInfo.summary} (com horário)`;
+        }).join(' ');
+        return `${dateStr}: indisponível. ${details}`;
+      }
+
+      function renderCalendar(y, m) {
+        const firstDay = new Date(y, m, 1);
+        const lastDay = new Date(y, m + 1, 0);
+        let html = `<div class='flex justify-between items-center mb-2'>
+          <button id='prevMonth' class='px-2 py-1 bg-gray-200 rounded'>&lt;</button>
+          <span class='font-bold'>${monthNames[m]} ${y}</span>
+          <button id='nextMonth' class='px-2 py-1 bg-gray-200 rounded'>&gt;</button>
+        </div>`;
+        html += "<div class='grid grid-cols-7 gap-1 text-center text-xs mb-1'>";
+        ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].forEach(d => html += `<div>${d}</div>`);
+        html += "</div><div class='grid grid-cols-7 gap-1 text-center'>";
+        for (let i = 0; i < firstDay.getDay(); i++) html += "<div></div>";
+        for (let d = 1; d <= lastDay.getDate(); d++) {
+          const dateStr = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+          const isBusy = busyDates.has(dateStr);
+          const title = getDayDetails(dateStr, isBusy).replace(/'/g, '&#39;');
+          html += `<button type='button' data-date='${dateStr}' title='${title}' class='py-1 rounded flex items-center justify-center ${isBusy ? 'bg-red-400 text-white' : 'bg-green-200 text-green-900'}'>${d}${isBusy ? '<i class="fas fa-times-circle ml-1" title="Indisponível"></i>' : ''}</button>`;
+        }
+        html += "</div>";
+        calendarEl.innerHTML = html;
+
+        document.getElementById('prevMonth').onclick = async () => {
+          currentMonth -= 1;
+          if (currentMonth < 0) { currentMonth = 11; currentYear -= 1; }
+          await loadMonthFromGoogleCalendar(currentYear, currentMonth);
+          renderCalendar(currentYear, currentMonth);
+        };
+
+        document.getElementById('nextMonth').onclick = async () => {
+          currentMonth += 1;
+          if (currentMonth > 11) { currentMonth = 0; currentYear += 1; }
+          await loadMonthFromGoogleCalendar(currentYear, currentMonth);
+          renderCalendar(currentYear, currentMonth);
+        };
+
+        calendarEl.querySelectorAll('[data-date]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const dateStr = btn.getAttribute('data-date');
+            const isBusy = busyDates.has(dateStr);
+            const details = getDayDetails(dateStr, isBusy);
+            setCalendarStatus(details, false);
+          });
+        });
+      }
+
+      async function loadMonthFromGoogleCalendar(y, m) {
+        busyDates = new Set();
+        eventsByDate = new Map();
+
+        const hasConfig = calendarConfig.apiKey && calendarConfig.calendarId;
+        if (!hasConfig) {
+          fallbackBusyDates.forEach((date) => busyDates.add(date));
+          setCalendarStatus('Calendário em modo local. Configure apenas a API key para sincronização automática.');
+          return;
+        }
+
+        try {
+          const timeMin = new Date(y, m, 1).toISOString();
+          const timeMax = new Date(y, m + 1, 1).toISOString();
+          const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarConfig.calendarId)}/events?key=${encodeURIComponent(calendarConfig.apiKey)}&singleEvents=true&orderBy=startTime&maxResults=2500&timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}`;
+
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Erro ${response.status}`);
+          const data = await response.json();
+          const events = Array.isArray(data.items) ? data.items : [];
+
+          events.forEach((event) => {
+            if (event.status === 'cancelled') return;
+            const parsed = parseEventToRange(event);
+            if (!parsed) return;
+            addEventRange(parsed.start, parsed.endExclusive, parsed.info);
+          });
+
+          setCalendarStatus(`Atualizado automaticamente de ${monthNames[m]} de ${y}.`);
+        } catch (error) {
+          fallbackBusyDates.forEach((date) => busyDates.add(date));
+          setCalendarStatus('Não foi possível sincronizar com Google Calendar agora. Exibindo modo local.', true);
+          console.error(error);
+        }
+      }
+
+      (async function initCalendar() {
+        await loadMonthFromGoogleCalendar(currentYear, currentMonth);
+        renderCalendar(currentYear, currentMonth);
+      })();
+    }
+  </script>
+</body>
+</html>
