@@ -12,6 +12,11 @@
     <meta property="og:image" content="https://japaprp.github.io/estacia-renascer-belvedere/imagens/principal.jpg">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://japaprp.github.io/estacia-renascer-belvedere/">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -122,6 +127,36 @@
         );
         background-size: 600% 600%;
         animation: camaleaoGradient 15s ease infinite;
+      }
+
+      /* Modo escuro suave (cinza) */
+      html.dark body {
+        background-color: #0f172a;
+        color: #e5e7eb;
+      }
+      html.dark header {
+        background-color: rgba(15, 23, 42, 0.9);
+      }
+      html.dark #mobile-menu {
+        background-color: #0f172a;
+      }
+      html.dark .bg-white {
+        background-color: #1f2937 !important;
+      }
+      html.dark .bg-gray-100 {
+        background-color: #111827 !important;
+      }
+      html.dark .text-gray-800 {
+        color: #f3f4f6 !important;
+      }
+      html.dark .text-gray-600 {
+        color: #cbd5e1 !important;
+      }
+      html.dark details {
+        border: 1px solid #334155;
+      }
+      html.dark .testimonial-card {
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
       }
     </style>
 </head>
@@ -496,7 +531,7 @@
         </details>
         <details class="bg-gray-100 rounded-lg p-4">
           <summary class="font-semibold cursor-pointer">Como vejo as datas disponíveis?</summary>
-          <p class="mt-2">Consulte o calendário acima ou entre em contato para confirmar disponibilidade.</p>
+          <p class="mt-2">Consulte o calendário mais abaixo, na seção de contato, ou fale conosco para confirmar disponibilidade.</p>
         </details>
       </div>
     </div>
@@ -638,7 +673,7 @@
 
     <!-- Google Maps e Calendário lado a lado -->
     <div class="mt-12 flex flex-col md:flex-row md:justify-center md:items-start gap-8">
-      <div class="roundedhttps://www.google.com/maps/dir/?api=1&destination=Ribeirão+Preto,+SP-lg overflow-hidden shadow-lg w-full md:w-1/2 lg:w-2/5 flex flex-col justify-stretch h-[400px]" data-aos="zoom-in">
+      <div class="rounded-lg overflow-hidden shadow-lg w-full md:w-1/2 lg:w-2/5 flex flex-col justify-stretch h-[400px]" data-aos="zoom-in">
         <iframe
           src="https://www.google.com/maps?q=Ribeirão+Preto,+SP&output=embed"
           class="w-full h-full min-h-[220px]"
@@ -693,9 +728,22 @@
     document.addEventListener('DOMContentLoaded', function() {
       const btn = document.getElementById('toggle-dark');
       const html = document.documentElement;
+      if (!btn) return;
+
+      const icon = btn.querySelector('i');
+      const updateThemeIcon = () => {
+        if (!icon) return;
+        const isDark = html.classList.contains('dark');
+        icon.classList.toggle('fa-moon', !isDark);
+        icon.classList.toggle('fa-sun', isDark);
+        btn.setAttribute('aria-pressed', String(isDark));
+      };
+
       if (localStorage.getItem('theme') === 'dark' || (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
         html.classList.add('dark');
       }
+      updateThemeIcon();
+
       btn.addEventListener('click', function() {
         html.classList.toggle('dark');
         if (html.classList.contains('dark')) {
@@ -703,6 +751,7 @@
         } else {
           localStorage.setItem('theme', 'light');
         }
+        updateThemeIcon();
       });
     });
     // Botão copiar endereço
@@ -762,9 +811,11 @@
     // Menu mobile
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
 
     // AOS animações
     AOS.init();
