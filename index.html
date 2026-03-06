@@ -715,23 +715,16 @@
     // Lightbox galeria
     const lightbox = GLightbox({ selector: '.glightbox' });
 
-    // Calendário com Google Calendar (gratuito para calendário público)
+    // Calendário carregado de availability.json (seguro, sem chave no frontend)
     const calendarEl = document.getElementById('calendar');
     const calendarStatusEl = document.getElementById('calendar-status');
     if (calendarEl) {
-      const calendarConfig = {
-        // Crie uma API key no Google Cloud e restrinja para seu domínio (HTTP referrer)
-        apiKey: '',
-        // Exemplo: xxxxx@group.calendar.google.com
-        calendarId: 'estaciarenascerbelvedere@gmail.com'
-      };
-
-      // Fallback caso API não esteja configurada
+      const AVAILABILITY_URL = './availability.json';
       const fallbackBusyDates = [
         '2026-03-15', '2026-03-22', '2026-04-05'
       ];
 
-      let busyDates = new Set();
+      let busyDates = new Set(fallbackBusyDates);
       let eventsByDate = new Map();
       let currentYear = new Date().getFullYear();
       let currentMonth = new Date().getMonth();
@@ -741,71 +734,10 @@
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
       ];
 
-      const toDateStr = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-      const fromDateStr = (str) => {
-        const [y, m, d] = str.split('-').map(Number);
-        return new Date(y, m - 1, d);
-      };
-
       function setCalendarStatus(message, isError = false) {
         if (!calendarStatusEl) return;
         calendarStatusEl.textContent = message;
         calendarStatusEl.className = `text-xs text-center mt-2 ${isError ? 'text-red-600' : 'text-gray-600'}`;
-      }
-
-      function addEventRange(startDate, endDateExclusive, eventInfo) {
-        const day = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-        while (day < endDateExclusive) {
-          const dateStr = toDateStr(day);
-          busyDates.add(dateStr);
-          if (!eventsByDate.has(dateStr)) eventsByDate.set(dateStr, []);
-          eventsByDate.get(dateStr).push(eventInfo);
-          day.setDate(day.getDate() + 1);
-        }
-      }
-
-      function parseEventToRange(event) {
-        if (event.start?.date && event.end?.date) {
-          const start = fromDateStr(event.start.date);
-          const endExclusive = fromDateStr(event.end.date);
-          const durationDays = Math.max(1, Math.round((endExclusive - start) / 86400000));
-          return {
-            start,
-            endExclusive,
-            info: {
-              summary: event.summary || 'Evento',
-              allDay: true,
-              durationDays
-            }
-          };
-        }
-
-        if (event.start?.dateTime && event.end?.dateTime) {
-          const startDateTime = new Date(event.start.dateTime);
-          const endDateTime = new Date(event.end.dateTime);
-          const start = new Date(startDateTime.getFullYear(), startDateTime.getMonth(), startDateTime.getDate());
-          const endExclusive = new Date(endDateTime.getFullYear(), endDateTime.getMonth(), endDateTime.getDate());
-
-          // Se terminar em horário dentro do dia, inclui esse último dia
-          if (endDateTime > endExclusive) {
-            endExclusive.setDate(endExclusive.getDate() + 1);
-          }
-          if (endExclusive <= start) {
-            endExclusive.setDate(start.getDate() + 1);
-          }
-
-          return {
-            start,
-            endExclusive,
-            info: {
-              summary: event.summary || 'Evento',
-              allDay: false,
-              durationDays: Math.max(1, Math.round((endExclusive - start) / 86400000))
-            }
-          };
-        }
-
-        return null;
       }
 
       function getDayDetails(dateStr, isBusy) {
@@ -817,12 +749,13 @@
           return `${dateStr}: indisponível.`;
         }
         const details = events.slice(0, 3).map((eventInfo) => {
+          const name = eventInfo.summary || 'Evento';
           if (eventInfo.allDay) {
             return eventInfo.durationDays > 1
-              ? `• ${eventInfo.summary} (dia inteiro, ${eventInfo.durationDays} dias)`
-              : `• ${eventInfo.summary} (dia inteiro)`;
+              ? `• ${name} (dia inteiro, ${eventInfo.durationDays} dias)`
+              : `• ${name} (dia inteiro)`;
           }
-          return `• ${eventInfo.summary} (com horário)`;
+          return `• ${name} (com horário)`;
         }).join(' ');
         return `${dateStr}: indisponível. ${details}`;
       }
@@ -848,17 +781,15 @@
         html += "</div>";
         calendarEl.innerHTML = html;
 
-        document.getElementById('prevMonth').onclick = async () => {
+        document.getElementById('prevMonth').onclick = () => {
           currentMonth -= 1;
           if (currentMonth < 0) { currentMonth = 11; currentYear -= 1; }
-          await loadMonthFromGoogleCalendar(currentYear, currentMonth);
           renderCalendar(currentYear, currentMonth);
         };
 
-        document.getElementById('nextMonth').onclick = async () => {
+        document.getElementById('nextMonth').onclick = () => {
           currentMonth += 1;
           if (currentMonth > 11) { currentMonth = 0; currentYear += 1; }
-          await loadMonthFromGoogleCalendar(currentYear, currentMonth);
           renderCalendar(currentYear, currentMonth);
         };
 
@@ -866,52 +797,58 @@
           btn.addEventListener('click', () => {
             const dateStr = btn.getAttribute('data-date');
             const isBusy = busyDates.has(dateStr);
-            const details = getDayDetails(dateStr, isBusy);
-            setCalendarStatus(details, false);
+            setCalendarStatus(getDayDetails(dateStr, isBusy), false);
           });
         });
       }
 
-      async function loadMonthFromGoogleCalendar(y, m) {
-        busyDates = new Set();
-        eventsByDate = new Map();
+      function normalizeEventsMap(rawEventsByDate) {
+        const map = new Map();
+        if (!rawEventsByDate || typeof rawEventsByDate !== 'object') return map;
+        Object.entries(rawEventsByDate).forEach(([dateStr, events]) => {
+          if (!Array.isArray(events)) return;
+          map.set(dateStr, events.map((event) => ({
+            summary: event.summary || 'Evento',
+            allDay: Boolean(event.allDay),
+            durationDays: Number.isFinite(event.durationDays) ? event.durationDays : 1
+          })));
+        });
+        return map;
+      }
 
-        const hasConfig = calendarConfig.apiKey && calendarConfig.calendarId;
-        if (!hasConfig) {
-          fallbackBusyDates.forEach((date) => busyDates.add(date));
-          setCalendarStatus('Calendário em modo local. Configure apenas a API key para sincronização automática.');
-          return;
-        }
-
+      async function loadAvailability() {
         try {
-          const timeMin = new Date(y, m, 1).toISOString();
-          const timeMax = new Date(y, m + 1, 1).toISOString();
-          const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarConfig.calendarId)}/events?key=${encodeURIComponent(calendarConfig.apiKey)}&singleEvents=true&orderBy=startTime&maxResults=2500&timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}`;
-
-          const response = await fetch(url);
+          const response = await fetch(`${AVAILABILITY_URL}?v=${Date.now()}`, { cache: 'no-store' });
           if (!response.ok) throw new Error(`Erro ${response.status}`);
           const data = await response.json();
-          const events = Array.isArray(data.items) ? data.items : [];
 
-          events.forEach((event) => {
-            if (event.status === 'cancelled') return;
-            const parsed = parseEventToRange(event);
-            if (!parsed) return;
-            addEventRange(parsed.start, parsed.endExclusive, parsed.info);
-          });
+          const blocked = Array.isArray(data.blockedDates) ? data.blockedDates : [];
+          busyDates = new Set(blocked);
+          eventsByDate = normalizeEventsMap(data.eventsByDate);
 
-          setCalendarStatus(`Atualizado automaticamente de ${monthNames[m]} de ${y}.`);
+          const updatedAt = data.updatedAt ? new Date(data.updatedAt) : null;
+          if (updatedAt && !Number.isNaN(updatedAt.getTime())) {
+            setCalendarStatus(`Atualizado em ${updatedAt.toLocaleString('pt-BR')}.`);
+          } else {
+            setCalendarStatus('Disponibilidade atualizada.');
+          }
         } catch (error) {
-          fallbackBusyDates.forEach((date) => busyDates.add(date));
-          setCalendarStatus('Não foi possível sincronizar com Google Calendar agora. Exibindo modo local.', true);
+          busyDates = new Set(fallbackBusyDates);
+          eventsByDate = new Map();
+          setCalendarStatus('Não foi possível sincronizar agora. Exibindo modo local.', true);
           console.error(error);
         }
       }
 
       (async function initCalendar() {
-        await loadMonthFromGoogleCalendar(currentYear, currentMonth);
+        await loadAvailability();
         renderCalendar(currentYear, currentMonth);
       })();
+
+      setInterval(async () => {
+        await loadAvailability();
+        renderCalendar(currentYear, currentMonth);
+      }, 60000);
     }
   </script>
 </body>
