@@ -1,5 +1,23 @@
 {
-  "updatedAt": "2026-04-07T12:38:16Z",
-  "blockedDates": [],
-  "eventsByDate": {}
+  "updatedAt": "2026-04-07T14:46:04Z",
+  "blockedDates": [
+    "2026-05-09",
+    "2026-05-10"
+  ],
+  "eventsByDate": {
+    "2026-05-09": [
+      {
+        "summary": "Evento",
+        "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-05-10": [
+      {
+        "summary": "Evento",
+        "allDay": false,
+        "durationDays": 1
+      }
+    ]
+  }
 }
