@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Espaço para eventos, casamentos, festas e retiros em Ribeirão Preto. Conheça a Estância Renascer Belvedere!">
-    <title>Estância Renascer Belvedere - Espaço de Eventos</title>
+    <meta name="description" content="Locação de espaço para eventos sociais, corporativos e encontros especiais em Ribeirão Preto. Conheça a Estância Renascer Belvedere.">
+    <title>Estância Renascer Belvedere - Locação de Espaço para Eventos</title>
     <link rel="icon" href="imagens/piscina.jpg" type="image/jpeg">
     <link rel="apple-touch-icon" href="imagens/piscina.jpg">
     <!-- Open Graph -->
-    <meta property="og:title" content="Estância Renascer Belvedere - Espaço de Eventos">
-    <meta property="og:description" content="Espaço para eventos, casamentos, festas e retiros em Ribeirão Preto. Conheça a Estância Renascer Belvedere!">
+    <meta property="og:title" content="Estância Renascer Belvedere - Locação de Espaço para Eventos">
+    <meta property="og:description" content="Locação de espaço para eventos sociais, corporativos e encontros especiais em Ribeirão Preto.">
     <meta property="og:image" content="https://japaprp.github.io/estacia-renascer-belvedere/imagens/principal.jpg">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://japaprp.github.io/estacia-renascer-belvedere/">
@@ -26,37 +26,127 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
     <style>
+      :root {
+        --page-bg: #f6f2ec;
+        --surface: #fffdfa;
+        --surface-muted: #f0ebe3;
+        --surface-soft: #e7ded2;
+        --header-bg: rgba(252, 248, 242, 0.92);
+        --header-border: rgba(176, 138, 74, 0.18);
+        --accent-primary: #b08a4a;
+        --accent-primary-hover: #8f6f39;
+        --accent-secondary: #c7ccd6;
+        --brand-main: #9a7840;
+        --brand-accent: #c2a162;
+        --text-strong: #223046;
+        --text-soft: #5d6674;
+        --text-on-accent: #fffefb;
+        --hero-overlay-top: rgba(18, 23, 34, 0.36);
+        --hero-overlay-bottom: rgba(49, 32, 21, 0.26);
+        --hero-shadow: 0 14px 34px rgba(32, 40, 58, 0.16);
+        --section-gradient-start: #f8f3ec;
+        --section-gradient-mid: #eee7dd;
+        --section-gradient-end: #e4dbcf;
+        --footer-start: #2b2f39;
+        --footer-end: #4f3f29;
+      }
+
+      html.dark {
+        --page-bg: #08101f;
+        --surface: #101827;
+        --surface-muted: #111d30;
+        --surface-soft: #241726;
+        --header-bg: rgba(8, 16, 31, 0.9);
+        --header-border: rgba(215, 179, 106, 0.28);
+        --accent-primary: #d7b36a;
+        --accent-primary-hover: #e6c98d;
+        --accent-secondary: #c5ced9;
+        --brand-main: #ffffff;
+        --brand-accent: #d7b36a;
+        --text-strong: #f8fafc;
+        --text-soft: #d5dbe5;
+        --text-on-accent: #111827;
+        --hero-overlay-top: rgba(4, 10, 21, 0.58);
+        --hero-overlay-bottom: rgba(53, 17, 28, 0.46);
+        --hero-shadow: 0 18px 42px rgba(0, 0, 0, 0.36);
+        --section-gradient-start: #081120;
+        --section-gradient-mid: #121a31;
+        --section-gradient-end: #351420;
+        --footer-start: #081120;
+        --footer-end: #34141f;
+      }
+
       .hero {
-        background: linear-gradient(
-            rgba(0, 0, 0, 0.5),
-            rgba(0, 0, 0, 0.5)
+        position: relative;
+        height: 80vh;
+        overflow: hidden;
+        box-shadow: var(--hero-shadow);
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: -8%;
+        background:
+          linear-gradient(
+            180deg,
+            var(--hero-overlay-top),
+            var(--hero-overlay-bottom)
           ),
           url('imagens/estancia_renascer_belvedere.jpeg');
         background-size: cover;
         background-position: center;
-        height: 80vh;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        transform: translate3d(0, var(--hero-offset, 0px), 0) scale(var(--hero-scale, 1.08));
+        transform-origin: center;
+        will-change: transform;
+      }
+
+      .hero > * {
+        position: relative;
+        z-index: 1;
       }
 
       img {
         max-width: 100%;
       }
+      body {
+        background-color: var(--page-bg);
+        color: var(--text-strong);
+      }
+      header {
+        background-color: var(--header-bg) !important;
+        border-bottom: 1px solid var(--header-border);
+      }
+      #mobile-menu {
+        background-color: var(--header-bg) !important;
+      }
+      .site-brand {
+        color: var(--brand-main);
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.18);
+      }
+      .site-brand-accent {
+        color: var(--brand-accent);
+      }
+      .site-brand-mark {
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 0 0 3px rgba(176, 138, 74, 0.14);
+      }
       .gallery-item {
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         border-radius: 0.75rem;
         overflow: hidden;
-        background: #fff;
+        background: var(--surface);
         height: 100%;
       }
       .gallery-item:hover {
         transform: translateY(-4px);
-        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.15);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
       }
       .gallery-thumb {
         display: block;
         aspect-ratio: 4 / 3;
         overflow: hidden;
-        background: #e5e7eb;
+        background: var(--surface-muted);
       }
       .gallery-img {
         width: 100%;
@@ -76,15 +166,15 @@
       }
 
       .testimonial-card {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 28px rgba(32, 40, 58, 0.12);
         transition: all 0.3s ease;
       }
       .testimonial-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 18px 40px rgba(32, 40, 58, 0.16);
       }
       section, .gallery-item, .testimonial-card, .faq {
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
       }
 
       .contact-info i {
@@ -97,15 +187,55 @@
         transition: transform 0.2s, box-shadow 0.2s;
       }
       .btn-anim:hover {
-        transform: scale(1.07);
-        box-shadow: 0 4px 16px rgba(67,160,71,0.15);
+        transform: scale(1.04);
+        box-shadow: 0 8px 18px rgba(176, 138, 74, 0.22);
       }
 
-      /* Rodapé com degrade */
-      footer.bg-gray-900 {
-        background: linear-gradient(90deg, #33691e 0%, #558b2f 100%);
+      body .text-green-600,
+      body .dark\:text-green-400 {
+        color: var(--accent-primary) !important;
       }
-      /* Animação de gradiente camaleão */
+      body .hover\:text-green-600:hover {
+        color: var(--accent-primary-hover) !important;
+      }
+      body .hover\:text-green-300:hover {
+        color: var(--accent-secondary) !important;
+      }
+      body .bg-green-600,
+      body .bg-green-500,
+      body .bg-green-800 {
+        background-color: var(--accent-primary) !important;
+        color: var(--text-on-accent) !important;
+      }
+      body .hover\:bg-green-700:hover,
+      body .hover\:bg-green-600:hover {
+        background-color: var(--accent-primary-hover) !important;
+        color: var(--text-on-accent) !important;
+      }
+      body .border-green-600,
+      body .dark\:border-green-400 {
+        border-color: var(--accent-primary) !important;
+      }
+      body .focus\:ring-green-400:focus {
+        --tw-ring-color: rgba(176, 138, 74, 0.36) !important;
+      }
+      body .bg-white {
+        background-color: var(--surface) !important;
+      }
+      body .bg-gray-100 {
+        background-color: var(--surface-muted) !important;
+      }
+      body .text-gray-800 {
+        color: var(--text-strong) !important;
+      }
+      body .text-gray-600 {
+        color: var(--text-soft) !important;
+      }
+
+      footer.bg-gray-900 {
+        background: linear-gradient(135deg, var(--footer-start) 0%, var(--footer-end) 100%);
+      }
+
       @keyframes camaleaoGradient {
         0% {
           background-position: 0% 50%;
@@ -120,54 +250,51 @@
 
       .bg-camaleao-animado {
         background: linear-gradient(
-          270deg,
-          #7cb342,
-          #c0ca33,
-          #42a5f5,
-          #7cb342
+          135deg,
+          var(--section-gradient-start),
+          var(--section-gradient-mid),
+          var(--section-gradient-end)
         );
-        background-size: 600% 600%;
-        animation: camaleaoGradient 15s ease infinite;
+        background-size: 180% 180%;
+        animation: camaleaoGradient 24s ease infinite;
       }
 
-      /* Modo escuro suave (cinza) */
       html.dark body {
-        background-color: #0f172a;
-        color: #e5e7eb;
-      }
-      html.dark header {
-        background-color: rgba(15, 23, 42, 0.9);
-      }
-      html.dark #mobile-menu {
-        background-color: #0f172a;
-      }
-      html.dark .bg-white {
-        background-color: #1f2937 !important;
-      }
-      html.dark .bg-gray-100 {
-        background-color: #111827 !important;
-      }
-      html.dark .bg-camaleao-animado {
-        background: #0b1220 !important;
-        animation: none !important;
-      }
-      html.dark footer.bg-gray-900 {
-        background: #0b1220 !important;
-      }
-      html.dark .text-gray-800 {
-        color: #f3f4f6 !important;
-      }
-      html.dark .text-gray-600 {
-        color: #cbd5e1 !important;
-      }
-      html.dark .text-white {
-        color: #f8fafc !important;
+        background-color: var(--page-bg);
+        color: var(--text-strong);
       }
       html.dark details {
-        border: 1px solid #334155;
+        border: 1px solid rgba(215, 179, 106, 0.22);
       }
       html.dark .testimonial-card {
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
+      }
+      html.dark .site-brand {
+        color: var(--brand-main);
+        text-shadow: 0 0 16px rgba(255, 255, 255, 0.1);
+      }
+      .calendar-status--ok {
+        color: var(--text-soft) !important;
+      }
+      .calendar-status--warning {
+        color: var(--accent-primary) !important;
+      }
+      .calendar-status--error {
+        color: #b91c1c !important;
+      }
+      html.dark .calendar-status--error {
+        color: #fca5a5 !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .hero::before,
+        .bg-camaleao-animado,
+        .btn-anim,
+        .gallery-item,
+        .testimonial-card {
+          animation: none !important;
+          transition: none !important;
+          transform: none !important;
+        }
       }
     </style>
 </head>
@@ -179,12 +306,12 @@
         <img
           src="imagens/piscina.jpg"
           alt="Logo Estância Renascer Belvedere"
-          class="w-10 h-10 rounded-full object-cover border-2 border-green-600 dark:border-green-400 shadow"
+          class="site-brand-mark w-10 h-10 rounded-full object-cover border-2 border-green-600 dark:border-green-400 shadow"
           loading="eager"
           decoding="async"
         />
-        <h1 class="text-xl font-bold text-gray-800 dark:text-white">
-          Estância Renascer <span class="text-green-600 dark:text-green-400">Belvedere</span>
+        <h1 class="site-brand text-xl font-bold">
+          Estância Renascer <span class="site-brand-accent">Belvedere</span>
         </h1>
       </div>
       <button id="toggle-dark" aria-label="Alternar modo escuro" class="ml-4 px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200">
@@ -198,7 +325,7 @@
           >Sobre</a
         >
         <a href="#services" class="text-gray-800 hover:text-green-600 font-medium"
-          >Serviços</a
+          >Eventos</a
         >
         <a href="#gallery" class="text-gray-800 hover:text-green-600 font-medium"
           >Galeria</a
@@ -224,7 +351,7 @@
           >Sobre</a
         >
         <a href="#services" class="text-gray-800 hover:text-green-600 font-medium"
-          >Serviços</a
+          >Eventos</a
         >
         <a href="#gallery" class="text-gray-800 hover:text-green-600 font-medium"
           >Galeria</a
@@ -243,17 +370,17 @@
     data-aos="fade-up"
   >
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6">Seu Evento Inesquecível</h1>
+      <h1 class="text-4xl md:text-6xl font-bold mb-6">Um Espaço Versátil para o Seu Evento</h1>
       <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-        Um espaço encantador para celebrar os momentos mais especiais da sua
-        vida
+        Locação de espaço para eventos sociais, corporativos e encontros
+        especiais, com liberdade para montar tudo do seu jeito.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <a
           href="#contact"
           class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim reserve-btn"
-          aria-label="Reservar agora"
-        >Reserve Agora</a>
+          aria-label="Solicitar disponibilidade"
+        >Solicitar Disponibilidade</a>
         <a
           href="#gallery"
           class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-800 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim"
@@ -267,7 +394,7 @@
   <section id="about" class="py-20 bg-camaleao-animado text-white" data-aos="fade-up">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Sobre Nós</h2>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Sobre o Espaço</h2>
         <div class="w-20 h-1 bg-white mx-auto"></div>
       </div>
       <div class="flex flex-col lg:flex-row items-center gap-12">
@@ -279,35 +406,37 @@
           />
         </div>
         <div class="lg:w-1/2">
-          <h3 class="text-2xl font-bold mb-6">Bem-vindo à Estância Renascer Belvedere</h3>
+          <h3 class="text-2xl font-bold mb-6">Estrutura para receber seu evento com liberdade</h3>
           <p class="mb-6">
-            Localizada em um ambiente tranquilo e cercado pela natureza, a Estância
-            Renascer Belvedere é o local perfeito para realizar seus eventos especiais.
-            Está planejando um casamento, aniversário ou um dia de lazer com a família?
-            Nossa chácara oferece o ambiente perfeito para criar memórias inesquecíveis!
-            Imagine celebrar cercado pela beleza da natureza, com espaço amplo e muito
-            conforto, para receber seus convidados com toda a tranquilidade. seu evento
-            será inesquecível.
+            A Estância Renascer Belvedere é um espaço para locação de eventos,
+            ideal para quem procura um ambiente amplo, cercado pela natureza e
+            com flexibilidade para montar cada detalhe de acordo com a proposta
+            da ocasião.
           </p>
           <p class="mb-6">
-            Nossa equipe está pronta para transformar seu sonho em realidade.
+            O espaço comporta até 70 pessoas, com possibilidade de ajuste por
+            negociação. A casa de apoio possui quatro quartos e acomoda até 16
+            pessoas, com duas suítes e seis banheiros no total. A locação é
+            feita por contrato e inclui exclusivamente o espaço: mesas,
+            cadeiras, decoração, som, geradores e demais estruturas devem ser
+            providenciados pelo contratante.
           </p>
           <div class="grid grid-cols-2 gap-4 text-white">
             <div class="flex items-center">
               <i class="fas fa-check-circle text-white text-xl mr-2"></i>
-              <span>Espaço amplo</span>
+              <span>Até 70 pessoas</span>
             </div>
             <div class="flex items-center">
               <i class="fas fa-check-circle text-white text-xl mr-2"></i>
-              <span>Estacionamento</span>
+              <span>Casa de apoio para 16 pessoas</span>
             </div>
             <div class="flex items-center">
               <i class="fas fa-check-circle text-white text-xl mr-2"></i>
-              <span>Cozinha</span>
+              <span>2 suítes e 6 banheiros</span>
             </div>
             <div class="flex items-center">
               <i class="fas fa-check-circle text-white text-xl mr-2"></i>
-              <span>Área verde</span>
+              <span>Contrato conforme o evento</span>
             </div>
           </div>
         </div>
@@ -320,13 +449,13 @@
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Nossos Serviços
+          Eventos e Possibilidades
         </h2>
         <div class="w-20 h-1 bg-green-600 mx-auto"></div>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Serviço: Casamentos -->
+        <!-- Evento: Casamentos -->
         <div
           class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
         >
@@ -335,26 +464,26 @@
           </div>
           <h3 class="text-xl font-bold text-gray-800 mb-3">Casamentos</h3>
           <p class="text-gray-600">
-            Um dia especial merece um lugar especial. Oferecemos toda a estrutura
-            para tornar seu casamento inesquecível.
+            Um ambiente amplo e marcante para cerimônias e celebrações com a
+            identidade do casal e fornecedores escolhidos por vocês.
           </p>
         </div>
 
-        <!-- Serviço: Festas -->
+        <!-- Evento: Festas -->
         <div
           class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
         >
           <div class="text-yellow-500 text-4xl mb-4">
             <i class="fas fa-birthday-cake"></i>
           </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-3">Festas</h3>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Festas e Confraternizações</h3>
           <p class="text-gray-600">
-            Aniversários, formaturas e comemorações em geral. Espaço ideal para
-            reunir familiares e amigos.
+            Aniversários, comemorações em família, encontros entre amigos e
+            eventos sociais com liberdade para personalizar cada detalhe.
           </p>
         </div>
 
-        <!-- Serviço: Eventos Corporativos -->
+        <!-- Evento: Corporativo -->
         <div
           class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
         >
@@ -363,22 +492,22 @@
           </div>
           <h3 class="text-xl font-bold text-gray-800 mb-3">Eventos Corporativos</h3>
           <p class="text-gray-600">
-            Ambiente profissional e acolhedor para reuniões, treinamentos e
-            confraternizações empresariais.
+            Um espaço diferenciado para treinamentos, confraternizações,
+            encontros de equipe e eventos empresariais em um ambiente mais leve.
           </p>
         </div>
 
-        <!-- Serviço: Eventos Religiosos -->
+        <!-- Evento: Religioso -->
         <div
           class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition duration-300"
         >
           <div class="text-purple-600 text-4xl mb-4">
             <i class="fas fa-church"></i>
           </div>
-          <h3 class="text-xl font-bold text-gray-800 mb-3">Eventos Religiosos</h3>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Encontros e Retiros</h3>
           <p class="text-gray-600">
-            Espaço adequado para celebrações religiosas, retiros e encontros
-            espirituais.
+            Ideal para encontros religiosos, retiros, celebrações e momentos de
+            convivência em um espaço reservado e acolhedor.
           </p>
         </div>
       </div>
@@ -533,22 +662,30 @@
         <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">Perguntas Frequentes</h2>
         <div class="w-20 h-1 bg-green-600 mx-auto"></div>
       </div>
-      <div class="space-y-6">
-        <details class="bg-gray-100 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">Posso visitar a estância antes de fechar a reserva?</summary>
-          <p class="mt-2">Sim! Agende uma visita pelo WhatsApp ou pelo formulário de contato.</p>
+        <div class="space-y-6">
+          <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Qual é a capacidade do espaço?</summary>
+          <p class="mt-2">A Estância acomoda até 70 pessoas, com possibilidade de ajuste conforme o formato do evento e negociação prévia.</p>
+          </details>
+          <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">A casa de apoio acomoda quantas pessoas?</summary>
+          <p class="mt-2">A casa de apoio possui quatro quartos e acomoda até 16 pessoas, com duas suítes e seis banheiros no total.</p>
+          </details>
+          <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">O que está incluso na locação?</summary>
+          <p class="mt-2">A locação inclui exclusivamente o espaço. Mesas, cadeiras, decoração, som, geradores, buffet e demais estruturas devem ser contratados separadamente pelo responsável pelo evento.</p>
+          </details>
+          <details class="bg-gray-100 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Posso contratar meus próprios fornecedores?</summary>
+          <p class="mt-2">Sim. Como a locação é do espaço, o contratante tem liberdade para definir fornecedores, estrutura e montagem conforme a necessidade do evento.</p>
         </details>
         <details class="bg-gray-100 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">O local possui estacionamento?</summary>
-          <p class="mt-2">Sim, temos estacionamento amplo para os convidados.</p>
+          <summary class="font-semibold cursor-pointer">Como funciona o aluguel do espaço?</summary>
+          <p class="mt-2">O aluguel é feito mediante contrato, com condições alinhadas de acordo com a data, o formato do evento e a necessidade de uso do espaço.</p>
         </details>
         <details class="bg-gray-100 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">Quais eventos posso realizar?</summary>
-          <p class="mt-2">Casamentos, aniversários, festas, retiros, eventos corporativos e religiosos.</p>
-        </details>
-        <details class="bg-gray-100 rounded-lg p-4">
-          <summary class="font-semibold cursor-pointer">Como vejo as datas disponíveis?</summary>
-          <p class="mt-2">Consulte o calendário mais abaixo, na seção de contato, ou fale conosco para confirmar disponibilidade.</p>
+          <summary class="font-semibold cursor-pointer">Como vejo as datas disponíveis ou agendo uma visita?</summary>
+          <p class="mt-2">Você pode consultar o calendário mais abaixo para ter uma referência e falar conosco pelo WhatsApp para confirmar datas, valores e agendar uma visita.</p>
         </details>
       </div>
     </div>
@@ -574,9 +711,9 @@
                 </div>
               </div>
               <p class="text-gray-800 mb-6">
-                "Realizamos o casamento da nossa filha na Estância Renascer e foi
-                perfeito! O espaço é lindo, a equipe muito atenciosa e tudo saiu
-                exatamente como planejamos."
+                "O espaço foi exatamente o que procurávamos: bonito, amplo e com
+                liberdade para montar o evento do nosso jeito. Isso fez toda a
+                diferença no resultado final."
               </p>
               <div class="flex items-center">
                 <div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-800 font-bold mr-3">
@@ -599,9 +736,9 @@
                 </div>
               </div>
               <p class="text-gray-800 mb-6">
-                "Fizemos a festa de 15 anos da nossa filha e foi maravilhoso! O
-                espaço é amplo, bem cuidado e a cozinha facilitou muito o trabalho do
-                buffet. Recomendo!"
+                "Foi uma excelente escolha para nossa confraternização. O espaço
+                é bem cuidado, acomoda bem os convidados e nos deu flexibilidade
+                para organizar tudo com nossos próprios fornecedores."
               </p>
               <div class="flex items-center">
                 <div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-800 font-bold mr-3">
@@ -624,8 +761,9 @@
                 </div>
               </div>
               <p class="text-gray-800 mb-6">
-                "Organizamos um retiro espiritual aqui e foi uma experiência incrível.
-                A natureza ao redor traz paz e tranquilidade para todos os participantes."
+                "Para o nosso encontro, a combinação de área aberta, casa de apoio
+                e clima tranquilo funcionou muito bem. Um lugar que se adapta a
+                diferentes propostas de evento."
               </p>
               <div class="flex items-center">
                 <div class="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-gray-800 font-bold mr-3">
@@ -738,6 +876,7 @@
     <p>© 2025 Estância Renascer Belvedere. Todos os direitos reservados.</p>
   </footer>
 
+  <script src="availability.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
@@ -834,8 +973,42 @@
       });
     }
 
+    // Hero parallax suave
+    (function() {
+      const hero = document.querySelector('.hero');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (!hero || prefersReducedMotion.matches) return;
+
+      let ticking = false;
+
+      const updateHeroParallax = () => {
+        const scrollY = window.scrollY || window.pageYOffset || 0;
+        const offset = Math.min(scrollY * 0.14, 72);
+        const scale = 1.08 + Math.min(scrollY * 0.00008, 0.05);
+        hero.style.setProperty('--hero-offset', `${offset}px`);
+        hero.style.setProperty('--hero-scale', scale.toFixed(3));
+        ticking = false;
+      };
+
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(updateHeroParallax);
+      };
+
+      updateHeroParallax();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+    })();
+
     // AOS animações
-    AOS.init();
+    AOS.init({
+      duration: 900,
+      easing: 'ease-out-cubic',
+      once: false,
+      mirror: true,
+      offset: 60,
+    });
     // Lightbox galeria
     const lightbox = GLightbox({ selector: '.glightbox' });
 
@@ -844,24 +1017,58 @@
     const calendarStatusEl = document.getElementById('calendar-status');
     if (calendarEl) {
       const AVAILABILITY_URL = './availability.json';
-      const fallbackBusyDates = [
-        '2026-03-15', '2026-03-22', '2026-04-05'
-      ];
+      const EMBEDDED_AVAILABILITY = window.__ESTANCIA_AVAILABILITY__ || null;
+      const DEFAULT_TIME_ZONE = 'America/Sao_Paulo';
+      const REFRESH_INTERVAL_MS = 30000;
+      const STALE_AFTER_MINUTES = 12;
+      const isFileProtocol = window.location.protocol === 'file:';
 
-      let busyDates = new Set(fallbackBusyDates);
+      let busyDates = new Set(Array.isArray(EMBEDDED_AVAILABILITY?.blockedDates) ? EMBEDDED_AVAILABILITY.blockedDates : []);
       let eventsByDate = new Map();
       let currentYear = new Date().getFullYear();
       let currentMonth = new Date().getMonth();
+      let sourceTimeZone = EMBEDDED_AVAILABILITY?.sourceTimeZone || DEFAULT_TIME_ZONE;
+      let activeAvailabilityRequest = null;
+      let hasLoadedAvailability = Boolean(EMBEDDED_AVAILABILITY);
 
       const monthNames = [
         'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
         'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
       ];
 
-      function setCalendarStatus(message, isError = false) {
+      function setCalendarStatus(message, tone = 'ok') {
         if (!calendarStatusEl) return;
         calendarStatusEl.textContent = message;
-        calendarStatusEl.className = `text-xs text-center mt-2 ${isError ? 'text-red-600' : 'text-gray-600'}`;
+        calendarStatusEl.className = `text-xs text-center mt-2 calendar-status--${tone}`;
+      }
+
+      function formatInTimeZone(dateValue, timeZone) {
+        return new Intl.DateTimeFormat('pt-BR', {
+          dateStyle: 'short',
+          timeStyle: 'short',
+          timeZone: timeZone || DEFAULT_TIME_ZONE,
+        }).format(dateValue);
+      }
+
+      function getSyncStatusMessage(updatedAt) {
+        if (!(updatedAt instanceof Date) || Number.isNaN(updatedAt.getTime())) {
+          return { message: 'Disponibilidade atualizada.', tone: 'ok' };
+        }
+
+        const ageMinutes = (Date.now() - updatedAt.getTime()) / 60000;
+        const formatted = formatInTimeZone(updatedAt, sourceTimeZone);
+
+        if (ageMinutes > STALE_AFTER_MINUTES) {
+          return {
+            message: `Última sincronização em ${formatted} (${sourceTimeZone}). Pode haver atraso na atualização.`,
+            tone: 'warning',
+          };
+        }
+
+        return {
+          message: `Sincronizado automaticamente em ${formatted} (${sourceTimeZone}).`,
+          tone: 'ok',
+        };
       }
 
       function getDayDetails(dateStr, isBusy) {
@@ -921,7 +1128,7 @@
           btn.addEventListener('click', () => {
             const dateStr = btn.getAttribute('data-date');
             const isBusy = busyDates.has(dateStr);
-            setCalendarStatus(getDayDetails(dateStr, isBusy), false);
+            setCalendarStatus(getDayDetails(dateStr, isBusy), isBusy ? 'warning' : 'ok');
           });
         });
       }
@@ -940,39 +1147,102 @@
         return map;
       }
 
-      async function loadAvailability() {
+      function applyAvailabilityData(data) {
+        const blocked = Array.isArray(data?.blockedDates) ? data.blockedDates : [];
+        busyDates = new Set(blocked);
+        eventsByDate = normalizeEventsMap(data?.eventsByDate);
+        sourceTimeZone = data?.sourceTimeZone || DEFAULT_TIME_ZONE;
+        hasLoadedAvailability = true;
+      }
+
+      if (EMBEDDED_AVAILABILITY) {
+        applyAvailabilityData(EMBEDDED_AVAILABILITY);
+      }
+
+      async function loadAvailability({ silent = false } = {}) {
+        if (isFileProtocol) {
+          if (EMBEDDED_AVAILABILITY) {
+            applyAvailabilityData(EMBEDDED_AVAILABILITY);
+            setCalendarStatus(
+              'Modo local detectado. Exibindo a última disponibilidade sincronizada. Para atualização ao vivo, abra pelo servidor local.',
+              'warning'
+            );
+          } else {
+            setCalendarStatus(
+              'Abra o site pelo servidor local para sincronizar o calendário em tempo real.',
+              'error'
+            );
+          }
+          renderCalendar(currentYear, currentMonth);
+          return;
+        }
+
+        if (activeAvailabilityRequest) {
+          activeAvailabilityRequest.abort();
+        }
+
+        activeAvailabilityRequest = new AbortController();
+
         try {
-          const response = await fetch(`${AVAILABILITY_URL}?v=${Date.now()}`, { cache: 'no-store' });
+          const response = await fetch(`${AVAILABILITY_URL}?v=${Date.now()}`, {
+            cache: 'no-store',
+            signal: activeAvailabilityRequest.signal,
+          });
           if (!response.ok) throw new Error(`Erro ${response.status}`);
           const data = await response.json();
-
-          const blocked = Array.isArray(data.blockedDates) ? data.blockedDates : [];
-          busyDates = new Set(blocked);
-          eventsByDate = normalizeEventsMap(data.eventsByDate);
+          applyAvailabilityData(data);
 
           const updatedAt = data.updatedAt ? new Date(data.updatedAt) : null;
-          if (updatedAt && !Number.isNaN(updatedAt.getTime())) {
-            setCalendarStatus(`Atualizado em ${updatedAt.toLocaleString('pt-BR')}.`);
-          } else {
-            setCalendarStatus('Disponibilidade atualizada.');
-          }
+          const syncStatus = getSyncStatusMessage(updatedAt);
+          setCalendarStatus(syncStatus.message, syncStatus.tone);
+          renderCalendar(currentYear, currentMonth);
         } catch (error) {
-          busyDates = new Set(fallbackBusyDates);
-          eventsByDate = new Map();
-          setCalendarStatus('Não foi possível sincronizar agora. Exibindo modo local.', true);
+          if (error.name === 'AbortError') return;
+          if (EMBEDDED_AVAILABILITY) {
+            applyAvailabilityData(EMBEDDED_AVAILABILITY);
+            setCalendarStatus(
+              'Não foi possível buscar a atualização agora. Exibindo a última disponibilidade sincronizada.',
+              'warning'
+            );
+            renderCalendar(currentYear, currentMonth);
+            return;
+          }
+          if (!silent || !hasLoadedAvailability) {
+            setCalendarStatus(
+              'Não foi possível sincronizar o calendário agora. Tente novamente em alguns instantes.',
+              'error'
+            );
+          }
           console.error(error);
+        } finally {
+          activeAvailabilityRequest = null;
         }
       }
 
       (async function initCalendar() {
-        await loadAvailability();
         renderCalendar(currentYear, currentMonth);
+        await loadAvailability();
       })();
 
-      setInterval(async () => {
-        await loadAvailability();
-        renderCalendar(currentYear, currentMonth);
-      }, 60000);
+      if (!isFileProtocol) {
+        setInterval(() => {
+          loadAvailability({ silent: true });
+        }, REFRESH_INTERVAL_MS);
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            loadAvailability({ silent: true });
+          }
+        });
+
+        window.addEventListener('focus', () => {
+          loadAvailability({ silent: true });
+        });
+
+        window.addEventListener('online', () => {
+          loadAvailability({ silent: false });
+        });
+      }
     }
   </script>
 </body>

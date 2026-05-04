@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Tuple
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, quote
 from urllib.request import urlopen
+from zoneinfo import ZoneInfo
 
 
 def iso_utc(dt: datetime) -> str:
@@ -62,7 +63,13 @@ def parse_event_range(event: Dict) -> Optional[Tuple[date, date, Dict]]:
     return None
 
 
-def fetch_events(calendar_id: str, api_key: str, time_min: str, time_max: str) -> List[Dict]:
+def fetch_events(
+    calendar_id: str,
+    api_key: str,
+    time_min: str,
+    time_max: str,
+    calendar_time_zone: str,
+) -> List[Dict]:
     base = f"https://www.googleapis.com/calendar/v3/calendars/{quote(calendar_id, safe='')}/events"
     events: List[Dict] = []
     page_token: Optional[str] = None
@@ -75,6 +82,7 @@ def fetch_events(calendar_id: str, api_key: str, time_min: str, time_max: str) -
             "maxResults": "2500",
             "timeMin": time_min,
             "timeMax": time_max,
+            "timeZone": calendar_time_zone,
         }
         if page_token:
             params["pageToken"] = page_token
@@ -101,19 +109,52 @@ def fetch_events(calendar_id: str, api_key: str, time_min: str, time_max: str) -
     return events
 
 
+def write_outputs(project_root: Path, payload: Dict) -> None:
+    output_path = project_root / "availability.json"
+    output_js_path = project_root / "availability.js"
+
+    json_payload = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+    js_payload = f"window.__ESTANCIA_AVAILABILITY__ = {json.dumps(payload, ensure_ascii=False, indent=2)};\n"
+
+    output_path.write_text(json_payload, encoding="utf-8")
+    output_js_path.write_text(js_payload, encoding="utf-8")
+
+
 def main() -> int:
     api_key = os.getenv("GOOGLE_CALENDAR_API_KEY", "").strip()
     calendar_id = os.getenv("GOOGLE_CALENDAR_ID", "").strip()
+    calendar_time_zone_name = os.getenv("GOOGLE_CALENDAR_TIMEZONE", "America/Sao_Paulo").strip() or "America/Sao_Paulo"
+    project_root = Path(__file__).resolve().parents[1]
 
     if not api_key or not calendar_id:
+        existing_json = project_root / "availability.json"
+        if existing_json.exists():
+            payload = json.loads(existing_json.read_text(encoding="utf-8"))
+            write_outputs(project_root, payload)
+            print("Skipping remote update: missing GOOGLE_CALENDAR_API_KEY or GOOGLE_CALENDAR_ID")
+            print("Regenerated availability.js from existing availability.json")
+            return 0
+
         print("Skipping update: missing GOOGLE_CALENDAR_API_KEY or GOOGLE_CALENDAR_ID")
         return 0
 
-    today = datetime.now(timezone.utc).date()
-    range_start = datetime.combine(today - timedelta(days=365), time.min, tzinfo=timezone.utc)
-    range_end = datetime.combine(today + timedelta(days=730), time.min, tzinfo=timezone.utc)
+    try:
+        calendar_time_zone = ZoneInfo(calendar_time_zone_name)
+    except Exception:
+        calendar_time_zone_name = "America/Sao_Paulo"
+        calendar_time_zone = ZoneInfo(calendar_time_zone_name)
 
-    events = fetch_events(calendar_id, api_key, iso_utc(range_start), iso_utc(range_end))
+    today = datetime.now(calendar_time_zone).date()
+    range_start = datetime.combine(today - timedelta(days=365), time.min, tzinfo=calendar_time_zone)
+    range_end = datetime.combine(today + timedelta(days=730), time.min, tzinfo=calendar_time_zone)
+
+    events = fetch_events(
+        calendar_id,
+        api_key,
+        iso_utc(range_start),
+        iso_utc(range_end),
+        calendar_time_zone_name,
+    )
 
     blocked_dates = set()
     events_by_date: Dict[str, List[Dict]] = {}
@@ -139,14 +180,18 @@ def main() -> int:
 
     payload = {
         "updatedAt": iso_utc(datetime.now(timezone.utc)),
+        "updatedAtLocal": datetime.now(calendar_time_zone).replace(microsecond=0).isoformat(),
+        "sourceTimeZone": calendar_time_zone_name,
         "blockedDates": sorted_dates,
         "eventsByDate": sorted_events_by_date,
     }
 
-    output_path = Path(__file__).resolve().parents[1] / "availability.json"
-    output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_outputs(project_root, payload)
 
+    output_path = project_root / "availability.json"
+    output_js_path = project_root / "availability.js"
     print(f"Wrote {len(sorted_dates)} blocked dates to {output_path}")
+    print(f"Wrote availability snapshot to {output_js_path}")
     return 0
 
 

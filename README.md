@@ -21,8 +21,26 @@ Dar presenca digital ao negocio, melhorar a comunicacao da proposta e facilitar 
 
 ## Como executar localmente
 
-1. Abra o arquivo `index.html` no navegador.
-2. Opcional: use Live Server no VS Code para desenvolvimento.
+1. Rode um servidor local na pasta do projeto.
+2. Abra a URL local no navegador.
+
+Exemplo com Python:
+
+```powershell
+python -m http.server 8080
+```
+
+Depois acesse:
+
+```text
+http://localhost:8080
+```
+
+Observação:
+
+- abrir `index.html` direto via `file://` não garante sincronização ao vivo do calendário
+- o projeto agora possui fallback local com a última disponibilidade sincronizada
+- para atualização em tempo real, use servidor local, GitHub Pages ou Live Server
 
 ## Repositorio
 

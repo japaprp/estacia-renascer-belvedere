@@ -1,0 +1,23 @@
+window.__ESTANCIA_AVAILABILITY__ = {
+  "updatedAt": "2026-05-04T17:43:49Z",
+  "blockedDates": [
+    "2026-05-09",
+    "2026-05-10"
+  ],
+  "eventsByDate": {
+    "2026-05-09": [
+      {
+        "summary": "Evento",
+        "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-05-10": [
+      {
+        "summary": "Evento",
+        "allDay": false,
+        "durationDays": 1
+      }
+    ]
+  }
+};
