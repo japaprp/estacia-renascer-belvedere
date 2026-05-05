@@ -41,8 +41,8 @@
         --text-strong: #223046;
         --text-soft: #5d6674;
         --text-on-accent: #fffefb;
-        --hero-overlay-top: rgba(18, 23, 34, 0.36);
-        --hero-overlay-bottom: rgba(49, 32, 21, 0.26);
+        --hero-overlay-top: rgba(18, 23, 34, 0.24);
+        --hero-overlay-bottom: rgba(49, 32, 21, 0.18);
         --hero-shadow: 0 14px 34px rgba(32, 40, 58, 0.16);
         --section-gradient-start: #4c5f77;
         --section-gradient-mid: #6b5a47;
@@ -66,8 +66,8 @@
         --text-strong: #f8fafc;
         --text-soft: #d5dbe5;
         --text-on-accent: #111827;
-        --hero-overlay-top: rgba(4, 10, 21, 0.58);
-        --hero-overlay-bottom: rgba(53, 17, 28, 0.46);
+        --hero-overlay-top: rgba(4, 10, 21, 0.5);
+        --hero-overlay-bottom: rgba(53, 17, 28, 0.4);
         --hero-shadow: 0 18px 42px rgba(0, 0, 0, 0.36);
         --section-gradient-start: #081120;
         --section-gradient-mid: #121a31;
@@ -141,6 +141,58 @@
         opacity: var(--hero-content-opacity, 1);
         will-change: transform, opacity;
         transition: opacity 0.18s linear;
+        max-width: 72rem;
+      }
+
+      .hero-copy {
+        max-width: 48rem;
+        margin: 0 auto;
+        padding: 1.75rem 1.5rem;
+        border-radius: 1.75rem;
+        background: linear-gradient(180deg, rgba(11, 18, 32, 0.34), rgba(11, 18, 32, 0.18));
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(7px);
+        box-shadow: 0 20px 45px rgba(8, 15, 28, 0.18);
+      }
+
+      .hero-copy h1 {
+        letter-spacing: -0.03em;
+        text-wrap: balance;
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+      }
+
+      .hero-copy p {
+        max-width: 41rem;
+        margin-left: auto;
+        margin-right: auto;
+        color: rgba(255, 251, 245, 0.94);
+        text-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
+      }
+
+      .hero-actions {
+        align-items: center;
+      }
+
+      .hero-primary-btn {
+        box-shadow: 0 16px 30px rgba(125, 93, 34, 0.34);
+      }
+
+      .hero-secondary-btn {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.78) !important;
+        backdrop-filter: blur(4px);
+      }
+
+      .hero-secondary-btn:hover {
+        background: rgba(255, 255, 255, 0.92) !important;
+        color: #1f2937 !important;
+      }
+
+      @media (max-width: 640px) {
+        .hero-copy {
+          padding: 1.25rem 1rem;
+          border-radius: 1.25rem;
+        }
       }
 
       img {
@@ -419,22 +471,24 @@
     data-aos="fade-up"
   >
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6">Um Espaço Versátil para o Seu Evento</h1>
-      <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-        Locação de espaço para eventos sociais, corporativos e encontros
-        especiais, com liberdade para montar tudo do seu jeito.
-      </p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a
-          href="#contact"
-          class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim reserve-btn"
-          aria-label="Solicitar disponibilidade"
-        >Solicitar Disponibilidade</a>
-        <a
-          href="#gallery"
-          class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-800 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim"
-          aria-label="Conheça o espaço"
-        >Conheça o Espaço</a>
+      <div class="hero-copy">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">Um Espaço Versátil para o Seu Evento</h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+          Locação de espaço para eventos sociais, corporativos e encontros
+          especiais, com liberdade para montar tudo do seu jeito.
+        </p>
+        <div class="hero-actions flex flex-col sm:flex-row justify-center gap-4">
+          <a
+            href="#contact"
+            class="hero-primary-btn bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim reserve-btn"
+            aria-label="Solicitar disponibilidade"
+          >Solicitar Disponibilidade</a>
+          <a
+            href="#gallery"
+            class="hero-secondary-btn bg-transparent border-2 border-white hover:bg-white hover:text-gray-800 text-white px-8 py-3 rounded-lg font-medium transition duration-300 btn-anim"
+            aria-label="Conheça o espaço"
+          >Conheça o Espaço</a>
+        </div>
       </div>
     </div>
   </section>
