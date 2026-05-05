@@ -81,6 +81,15 @@
         height: 80vh;
         overflow: hidden;
         box-shadow: var(--hero-shadow);
+        --hero-offset: 0px;
+        --hero-scale: 1.12;
+        --hero-tilt: 0deg;
+        --hero-brightness: 0.98;
+        --hero-contrast: 1.04;
+        --hero-content-offset: 0px;
+        --hero-content-scale: 1;
+        --hero-content-opacity: 1;
+        --hero-sheen-offset: 0%;
       }
 
       .hero::before {
@@ -96,14 +105,42 @@
           url('imagens/estancia_renascer_belvedere.jpeg');
         background-size: cover;
         background-position: center;
-        transform: translate3d(0, var(--hero-offset, 0px), 0) scale(var(--hero-scale, 1.08));
+        transform: translate3d(0, var(--hero-offset, 0px), 0) scale(var(--hero-scale, 1.12)) rotate(var(--hero-tilt, 0deg));
         transform-origin: center;
+        will-change: transform;
+        filter: brightness(var(--hero-brightness, 0.98)) contrast(var(--hero-contrast, 1.04)) saturate(1.08);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 22% 18%, rgba(255, 240, 209, 0.24), transparent 34%),
+          linear-gradient(
+            115deg,
+            transparent 0%,
+            rgba(255, 236, 204, 0.11) 42%,
+            rgba(255, 236, 204, 0.16) 50%,
+            transparent 62%
+          );
+        transform: translate3d(calc(var(--hero-sheen-offset, 0%) * 0.24), 0, 0);
+        mix-blend-mode: screen;
+        opacity: 0.75;
+        pointer-events: none;
         will-change: transform;
       }
 
       .hero > * {
         position: relative;
-        z-index: 1;
+        z-index: 2;
+      }
+
+      .hero .container {
+        transform: translate3d(0, var(--hero-content-offset, 0px), 0) scale(var(--hero-content-scale, 1));
+        opacity: var(--hero-content-opacity, 1);
+        will-change: transform, opacity;
+        transition: opacity 0.18s linear;
       }
 
       img {
@@ -287,6 +324,8 @@
       }
       @media (prefers-reduced-motion: reduce) {
         .hero::before,
+        .hero::after,
+        .hero .container,
         .bg-camaleao-animado,
         .btn-anim,
         .gallery-item,
@@ -973,9 +1012,10 @@
       });
     }
 
-    // Hero parallax suave
+    // Hero cinematic scroll
     (function() {
       const hero = document.querySelector('.hero');
+      const heroContent = hero?.querySelector('.container');
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       if (!hero || prefersReducedMotion.matches) return;
 
@@ -983,10 +1023,31 @@
 
       const updateHeroParallax = () => {
         const scrollY = window.scrollY || window.pageYOffset || 0;
-        const offset = Math.min(scrollY * 0.14, 72);
-        const scale = 1.08 + Math.min(scrollY * 0.00008, 0.05);
+        const heroHeight = hero.offsetHeight || window.innerHeight || 1;
+        const progress = Math.max(0, Math.min(scrollY / heroHeight, 1.25));
+        const offset = Math.min(scrollY * 0.26, 180);
+        const scale = 1.12 + Math.min(scrollY * 0.00014, 0.11);
+        const tilt = Math.min(progress * 0.7, 0.7);
+        const brightness = Math.max(0.82, 0.98 - progress * 0.16);
+        const contrast = Math.min(1.18, 1.04 + progress * 0.11);
+        const contentOffset = Math.min(scrollY * 0.12, 70);
+        const contentScale = Math.max(0.92, 1 - progress * 0.06);
+        const contentOpacity = Math.max(0.42, 1 - progress * 0.34);
+        const sheenOffset = `${Math.min(progress * 46, 46)}%`;
+
         hero.style.setProperty('--hero-offset', `${offset}px`);
         hero.style.setProperty('--hero-scale', scale.toFixed(3));
+        hero.style.setProperty('--hero-tilt', `${tilt.toFixed(3)}deg`);
+        hero.style.setProperty('--hero-brightness', brightness.toFixed(3));
+        hero.style.setProperty('--hero-contrast', contrast.toFixed(3));
+        hero.style.setProperty('--hero-sheen-offset', sheenOffset);
+
+        if (heroContent) {
+          hero.style.setProperty('--hero-content-offset', `${contentOffset.toFixed(1)}px`);
+          hero.style.setProperty('--hero-content-scale', contentScale.toFixed(3));
+          hero.style.setProperty('--hero-content-opacity', contentOpacity.toFixed(3));
+        }
+
         ticking = false;
       };
 
@@ -1012,12 +1073,13 @@
     // Lightbox galeria
     const lightbox = GLightbox({ selector: '.glightbox' });
 
-    // Calendário carregado de availability.json (seguro, sem chave no frontend)
+    // Calendário com leitura pública direta do Google Calendar e fallback local
     const calendarEl = document.getElementById('calendar');
     const calendarStatusEl = document.getElementById('calendar-status');
     if (calendarEl) {
       const AVAILABILITY_URL = './availability.json';
       const EMBEDDED_AVAILABILITY = window.__ESTANCIA_AVAILABILITY__ || null;
+      const PUBLIC_CALENDAR_CONFIG = window.__ESTANCIA_CALENDAR_CONFIG__ || null;
       const DEFAULT_TIME_ZONE = 'America/Sao_Paulo';
       const REFRESH_INTERVAL_MS = 30000;
       const STALE_AFTER_MINUTES = 12;
@@ -1028,6 +1090,7 @@
       let currentYear = new Date().getFullYear();
       let currentMonth = new Date().getMonth();
       let sourceTimeZone = EMBEDDED_AVAILABILITY?.sourceTimeZone || DEFAULT_TIME_ZONE;
+      let availabilitySource = EMBEDDED_AVAILABILITY?.source || 'availability-snapshot';
       let activeAvailabilityRequest = null;
       let hasLoadedAvailability = Boolean(EMBEDDED_AVAILABILITY);
 
@@ -1050,9 +1113,134 @@
         }).format(dateValue);
       }
 
+      function getDateTimeParts(dateValue, timeZone = DEFAULT_TIME_ZONE) {
+        const parts = new Intl.DateTimeFormat('en-CA', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone,
+        }).formatToParts(new Date(dateValue));
+        return parts.reduce((acc, part) => {
+          if (part.type !== 'literal') {
+            acc[part.type] = part.value;
+          }
+          return acc;
+        }, {});
+      }
+
+      function formatDateKey(dateValue, timeZone = DEFAULT_TIME_ZONE) {
+        const parts = getDateTimeParts(dateValue, timeZone);
+        return `${parts.year}-${parts.month}-${parts.day}`;
+      }
+
+      function formatTimeKey(dateValue, timeZone = DEFAULT_TIME_ZONE) {
+        const parts = getDateTimeParts(dateValue, timeZone);
+        return `${parts.hour}:${parts.minute}:${parts.second}`;
+      }
+
+      function addDays(dateStr, days = 1) {
+        const date = new Date(`${dateStr}T00:00:00Z`);
+        date.setUTCDate(date.getUTCDate() + days);
+        return date.toISOString().slice(0, 10);
+      }
+
+      function enumerateDateRange(startDateStr, endExclusiveStr) {
+        const dates = [];
+        let current = startDateStr;
+        let guard = 0;
+
+        while (current < endExclusiveStr && guard < 2000) {
+          dates.push(current);
+          current = addDays(current, 1);
+          guard += 1;
+        }
+
+        return dates;
+      }
+
+      function parseGoogleEventRange(event, timeZone = DEFAULT_TIME_ZONE) {
+        const start = event?.start || {};
+        const end = event?.end || {};
+
+        if (start.date && end.date) {
+          const startDay = start.date;
+          const endExclusive = end.date > startDay ? end.date : addDays(startDay, 1);
+          const durationDays = Math.max(1, enumerateDateRange(startDay, endExclusive).length);
+          return {
+            startDay,
+            endExclusive,
+            info: {
+              summary: event?.summary || 'Evento',
+              allDay: true,
+              durationDays,
+            },
+          };
+        }
+
+        if (start.dateTime && end.dateTime) {
+          const startDay = formatDateKey(start.dateTime, timeZone);
+          const localEndDate = formatDateKey(end.dateTime, timeZone);
+          const localEndTime = formatTimeKey(end.dateTime, timeZone);
+          const endExclusive = localEndTime === '00:00:00'
+            ? localEndDate
+            : addDays(localEndDate, 1);
+          const safeEndExclusive = endExclusive > startDay ? endExclusive : addDays(startDay, 1);
+          const durationDays = Math.max(1, enumerateDateRange(startDay, safeEndExclusive).length);
+          return {
+            startDay,
+            endExclusive: safeEndExclusive,
+            info: {
+              summary: event?.summary || 'Evento',
+              allDay: false,
+              durationDays,
+            },
+          };
+        }
+
+        return null;
+      }
+
+      function buildAvailabilityFromGoogleItems(items, timeZone = DEFAULT_TIME_ZONE) {
+        const blockedDates = new Set();
+        const normalizedEvents = new Map();
+
+        (Array.isArray(items) ? items : []).forEach((event) => {
+          if (event?.status === 'cancelled') return;
+
+          const parsed = parseGoogleEventRange(event, timeZone);
+          if (!parsed) return;
+
+          const { startDay, endExclusive, info } = parsed;
+          enumerateDateRange(startDay, endExclusive).forEach((dateStr) => {
+            blockedDates.add(dateStr);
+            const currentEvents = normalizedEvents.get(dateStr) || [];
+            currentEvents.push(info);
+            normalizedEvents.set(dateStr, currentEvents);
+          });
+        });
+
+        return {
+          updatedAt: new Date().toISOString(),
+          source: 'google-calendar-public',
+          sourceTimeZone: timeZone,
+          blockedDates: Array.from(blockedDates).sort(),
+          eventsByDate: Object.fromEntries(
+            Array.from(normalizedEvents.entries()).sort(([a], [b]) => a.localeCompare(b))
+          ),
+        };
+      }
+
       function getSyncStatusMessage(updatedAt) {
+        const sourceLabel = availabilitySource === 'google-calendar-public'
+          ? 'Google Calendar público'
+          : 'espelho do calendário';
+
         if (!(updatedAt instanceof Date) || Number.isNaN(updatedAt.getTime())) {
-          return { message: 'Disponibilidade atualizada.', tone: 'ok' };
+          return { message: `${sourceLabel} atualizado.`, tone: 'ok' };
         }
 
         const ageMinutes = (Date.now() - updatedAt.getTime()) / 60000;
@@ -1060,13 +1248,13 @@
 
         if (ageMinutes > STALE_AFTER_MINUTES) {
           return {
-            message: `Última sincronização em ${formatted} (${sourceTimeZone}). Pode haver atraso na atualização.`,
+            message: `Última leitura do ${sourceLabel} em ${formatted} (${sourceTimeZone}). Pode haver atraso na atualização.`,
             tone: 'warning',
           };
         }
 
         return {
-          message: `Sincronizado automaticamente em ${formatted} (${sourceTimeZone}).`,
+          message: `${sourceLabel} sincronizado em ${formatted} (${sourceTimeZone}).`,
           tone: 'ok',
         };
       }
@@ -1152,11 +1340,82 @@
         busyDates = new Set(blocked);
         eventsByDate = normalizeEventsMap(data?.eventsByDate);
         sourceTimeZone = data?.sourceTimeZone || DEFAULT_TIME_ZONE;
+        availabilitySource = data?.source || 'availability-snapshot';
         hasLoadedAvailability = true;
       }
 
       if (EMBEDDED_AVAILABILITY) {
         applyAvailabilityData(EMBEDDED_AVAILABILITY);
+      }
+
+      async function fetchPublicCalendarAvailability(signal) {
+        if (!PUBLIC_CALENDAR_CONFIG?.apiKey || !PUBLIC_CALENDAR_CONFIG?.calendarId) {
+          return null;
+        }
+
+        const timeZone = PUBLIC_CALENDAR_CONFIG.timeZone || DEFAULT_TIME_ZONE;
+        const now = new Date();
+        const rangeStart = new Date(now);
+        rangeStart.setFullYear(rangeStart.getFullYear() - 1);
+        rangeStart.setHours(0, 0, 0, 0);
+
+        const rangeEnd = new Date(now);
+        rangeEnd.setFullYear(rangeEnd.getFullYear() + 2);
+        rangeEnd.setHours(0, 0, 0, 0);
+
+        const items = [];
+        let pageToken = '';
+
+        do {
+          const params = new URLSearchParams({
+            key: PUBLIC_CALENDAR_CONFIG.apiKey,
+            singleEvents: 'true',
+            orderBy: 'startTime',
+            maxResults: '2500',
+            timeMin: rangeStart.toISOString(),
+            timeMax: rangeEnd.toISOString(),
+            timeZone,
+          });
+
+          if (pageToken) {
+            params.set('pageToken', pageToken);
+          }
+
+          const response = await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(PUBLIC_CALENDAR_CONFIG.calendarId)}/events?${params.toString()}`,
+            {
+              cache: 'no-store',
+              signal,
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Google Calendar público retornou ${response.status}`);
+          }
+
+          const payload = await response.json();
+          items.push(...(Array.isArray(payload?.items) ? payload.items : []));
+          pageToken = payload?.nextPageToken || '';
+        } while (pageToken);
+
+        return buildAvailabilityFromGoogleItems(items, timeZone);
+      }
+
+      async function fetchAvailabilitySnapshot(signal) {
+        const response = await fetch(`${AVAILABILITY_URL}?v=${Date.now()}`, {
+          cache: 'no-store',
+          signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro ${response.status}`);
+        }
+
+        const data = await response.json();
+        return {
+          ...data,
+          source: data?.source || 'availability-snapshot',
+        };
       }
 
       async function loadAvailability({ silent = false } = {}) {
@@ -1184,17 +1443,39 @@
         activeAvailabilityRequest = new AbortController();
 
         try {
-          const response = await fetch(`${AVAILABILITY_URL}?v=${Date.now()}`, {
-            cache: 'no-store',
-            signal: activeAvailabilityRequest.signal,
-          });
-          if (!response.ok) throw new Error(`Erro ${response.status}`);
-          const data = await response.json();
+          let directCalendarError = null;
+          let data = null;
+
+          if (PUBLIC_CALENDAR_CONFIG?.apiKey && PUBLIC_CALENDAR_CONFIG?.calendarId) {
+            try {
+              data = await fetchPublicCalendarAvailability(activeAvailabilityRequest.signal);
+            } catch (error) {
+              if (error.name === 'AbortError') throw error;
+              directCalendarError = error;
+              console.warn('Falha ao consultar Google Calendar público, usando fallback.', error);
+            }
+          }
+
+          if (!data) {
+            data = await fetchAvailabilitySnapshot(activeAvailabilityRequest.signal);
+          }
+
           applyAvailabilityData(data);
 
-          const updatedAt = data.updatedAt ? new Date(data.updatedAt) : null;
-          const syncStatus = getSyncStatusMessage(updatedAt);
-          setCalendarStatus(syncStatus.message, syncStatus.tone);
+          const updatedAt = data?.updatedAt ? new Date(data.updatedAt) : null;
+          if (directCalendarError && availabilitySource !== 'google-calendar-public') {
+            const formatted = updatedAt instanceof Date && !Number.isNaN(updatedAt.getTime())
+              ? formatInTimeZone(updatedAt, sourceTimeZone)
+              : 'agora';
+            setCalendarStatus(
+              `Google Calendar público indisponível no momento. Exibindo o espelho do site atualizado em ${formatted} (${sourceTimeZone}).`,
+              'warning'
+            );
+          } else {
+            const syncStatus = getSyncStatusMessage(updatedAt);
+            setCalendarStatus(syncStatus.message, syncStatus.tone);
+          }
+
           renderCalendar(currentYear, currentMonth);
         } catch (error) {
           if (error.name === 'AbortError') return;

@@ -109,12 +109,21 @@ def fetch_events(
     return events
 
 
-def write_outputs(project_root: Path, payload: Dict) -> None:
+def write_outputs(project_root: Path, payload: Dict, public_calendar_config: Optional[Dict] = None) -> None:
     output_path = project_root / "availability.json"
     output_js_path = project_root / "availability.js"
 
     json_payload = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
-    js_payload = f"window.__ESTANCIA_AVAILABILITY__ = {json.dumps(payload, ensure_ascii=False, indent=2)};\n"
+    js_chunks = [
+        f"window.__ESTANCIA_AVAILABILITY__ = {json.dumps(payload, ensure_ascii=False, indent=2)};",
+    ]
+
+    if public_calendar_config:
+        js_chunks.append(
+            f"window.__ESTANCIA_CALENDAR_CONFIG__ = {json.dumps(public_calendar_config, ensure_ascii=False, indent=2)};"
+        )
+
+    js_payload = "\n".join(js_chunks) + "\n"
 
     output_path.write_text(json_payload, encoding="utf-8")
     output_js_path.write_text(js_payload, encoding="utf-8")
@@ -181,12 +190,19 @@ def main() -> int:
     payload = {
         "updatedAt": iso_utc(datetime.now(timezone.utc)),
         "updatedAtLocal": datetime.now(calendar_time_zone).replace(microsecond=0).isoformat(),
+        "source": "availability-snapshot",
         "sourceTimeZone": calendar_time_zone_name,
         "blockedDates": sorted_dates,
         "eventsByDate": sorted_events_by_date,
     }
 
-    write_outputs(project_root, payload)
+    public_calendar_config = {
+        "apiKey": api_key,
+        "calendarId": calendar_id,
+        "timeZone": calendar_time_zone_name,
+    }
+
+    write_outputs(project_root, payload, public_calendar_config)
 
     output_path = project_root / "availability.json"
     output_js_path = project_root / "availability.js"
