@@ -1169,8 +1169,11 @@
 
       function setCalendarStatus(message, tone = 'ok') {
         if (!calendarStatusEl) return;
-        calendarStatusEl.textContent = message;
-        calendarStatusEl.className = `text-xs text-center mt-2 calendar-status--${tone}`;
+        const hasMessage = Boolean((message || '').trim());
+        calendarStatusEl.textContent = hasMessage ? message : '';
+        calendarStatusEl.className = hasMessage
+          ? `text-xs text-center mt-2 calendar-status--${tone}`
+          : 'hidden';
       }
 
       function formatInTimeZone(dateValue, timeZone) {
@@ -1490,15 +1493,9 @@
         if (isFileProtocol) {
           if (EMBEDDED_AVAILABILITY) {
             applyAvailabilityData(EMBEDDED_AVAILABILITY);
-            setCalendarStatus(
-              'Modo local detectado. Exibindo a última disponibilidade sincronizada. Para atualização ao vivo, abra pelo servidor local.',
-              'warning'
-            );
+            setCalendarStatus('');
           } else {
-            setCalendarStatus(
-              'Abra o site pelo servidor local para sincronizar o calendário em tempo real.',
-              'error'
-            );
+            setCalendarStatus('');
           }
           renderCalendar(currentYear, currentMonth);
           return;
