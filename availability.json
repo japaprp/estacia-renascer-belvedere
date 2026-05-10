@@ -1,12 +1,13 @@
 {
-  "updatedAt": "2026-05-10T12:09:17Z",
-  "updatedAtLocal": "2026-05-10T09:09:17-03:00",
+  "updatedAt": "2026-05-10T13:52:50Z",
+  "updatedAtLocal": "2026-05-10T10:52:50-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
   "blockedDates": [
     "2026-05-09",
     "2026-05-10",
-    "2026-05-16"
+    "2026-05-16",
+    "2026-05-17"
   ],
   "eventsByDate": {
     "2026-05-09": [
@@ -32,6 +33,13 @@
       {
         "summary": "Gabriela Artur",
         "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-05-17": [
+      {
+        "summary": "Cantor percles em Ribeirão as 17:00 horas Carlos raya",
+        "allDay": false,
         "durationDays": 1
       }
     ]
