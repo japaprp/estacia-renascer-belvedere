@@ -1,13 +1,16 @@
 window.__ESTANCIA_AVAILABILITY__ = {
-  "updatedAt": "2026-05-19T23:18:29Z",
-  "updatedAtLocal": "2026-05-19T20:18:29-03:00",
+  "updatedAt": "2026-05-20T01:26:48Z",
+  "updatedAtLocal": "2026-05-19T22:26:48-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
   "blockedDates": [
     "2026-05-09",
     "2026-05-10",
     "2026-05-16",
-    "2026-05-17"
+    "2026-05-17",
+    "2026-06-13",
+    "2026-06-19",
+    "2026-06-24"
   ],
   "eventsByDate": {
     "2026-05-09": [
@@ -40,6 +43,27 @@ window.__ESTANCIA_AVAILABILITY__ = {
       {
         "summary": "Cantor percles em Ribeirão as 17:00 horas Carlos raya",
         "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-06-13": [
+      {
+        "summary": "Jogo do Brasil copa",
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-06-19": [
+      {
+        "summary": "Jogo do Brasil copa",
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-06-24": [
+      {
+        "summary": "Jogo Brasil copa",
+        "allDay": true,
         "durationDays": 1
       }
     ]
