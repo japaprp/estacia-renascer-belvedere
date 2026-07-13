@@ -1,6 +1,6 @@
 window.__ESTANCIA_AVAILABILITY__ = {
-  "updatedAt": "2026-07-13T10:53:42Z",
-  "updatedAtLocal": "2026-07-13T07:53:42-03:00",
+  "updatedAt": "2026-07-13T13:10:27Z",
+  "updatedAtLocal": "2026-07-13T10:10:27-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
   "blockedDates": [
@@ -12,6 +12,8 @@ window.__ESTANCIA_AVAILABILITY__ = {
     "2026-06-19",
     "2026-06-24",
     "2026-07-20",
+    "2026-08-01",
+    "2026-08-02",
     "2026-11-28",
     "2026-12-13"
   ],
@@ -74,6 +76,20 @@ window.__ESTANCIA_AVAILABILITY__ = {
       {
         "summary": "Última dia Artur reagir tomar atitude",
         "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-08-01": [
+      {
+        "summary": "Aniversário João Luis secco as 10hs 16993118103",
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-08-02": [
+      {
+        "summary": "João seco entrega as 12:30 hs",
+        "allDay": false,
         "durationDays": 1
       }
     ],
