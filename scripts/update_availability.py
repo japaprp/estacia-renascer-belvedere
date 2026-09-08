@@ -33,17 +33,11 @@ def parse_event_range(event: Dict) -> Optional[Tuple[date, date, Dict]]:
         if end_exclusive <= start_day:
             end_exclusive = start_day + timedelta(days=1)
         duration = max(1, (end_exclusive - start_day).days)
-        info = {
-            "summary": event.get("summary") or "Evento",
-            "allDay": True,
-            "durationDays": duration,
-        }
-        return start_day, end_exclusive, info
+        return start_day, end_exclusive, {"allDay": True, "durationDays": duration}
 
     if "dateTime" in start and "dateTime" in end:
         start_dt = parse_datetime(start["dateTime"])
         end_dt = parse_datetime(end["dateTime"])
-
         start_day = start_dt.date()
         end_exclusive = end_dt.date()
 
@@ -53,12 +47,7 @@ def parse_event_range(event: Dict) -> Optional[Tuple[date, date, Dict]]:
             end_exclusive = start_day + timedelta(days=1)
 
         duration = max(1, (end_exclusive - start_day).days)
-        info = {
-            "summary": event.get("summary") or "Evento",
-            "allDay": False,
-            "durationDays": duration,
-        }
-        return start_day, end_exclusive, info
+        return start_day, end_exclusive, {"allDay": False, "durationDays": duration}
 
     return None
 
@@ -93,15 +82,11 @@ def fetch_events(
                 payload = json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
             details = exc.read().decode("utf-8", errors="replace")
-            raise RuntimeError(
-                f"Google Calendar API HTTP {exc.code}. Response: {details}"
-            ) from exc
+            raise RuntimeError(f"Google Calendar API HTTP {exc.code}. Response: {details}") from exc
         except URLError as exc:
             raise RuntimeError(f"Google Calendar API network error: {exc.reason}") from exc
 
-        items = payload.get("items") or []
-        events.extend(items)
-
+        events.extend(payload.get("items") or [])
         page_token = payload.get("nextPageToken")
         if not page_token:
             break
@@ -109,21 +94,16 @@ def fetch_events(
     return events
 
 
-def write_outputs(project_root: Path, payload: Dict, public_calendar_config: Optional[Dict] = None) -> None:
+def write_outputs(project_root: Path, payload: Dict) -> None:
     output_path = project_root / "availability.json"
     output_js_path = project_root / "availability.js"
 
     json_payload = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
-    js_chunks = [
-        f"window.__ESTANCIA_AVAILABILITY__ = {json.dumps(payload, ensure_ascii=False, indent=2)};",
-    ]
-
-    if public_calendar_config:
-        js_chunks.append(
-            f"window.__ESTANCIA_CALENDAR_CONFIG__ = {json.dumps(public_calendar_config, ensure_ascii=False, indent=2)};"
-        )
-
-    js_payload = "\n".join(js_chunks) + "\n"
+    js_payload = (
+        "window.__ESTANCIA_AVAILABILITY__ = "
+        + json.dumps(payload, ensure_ascii=False, indent=2)
+        + ";\n"
+    )
 
     output_path.write_text(json_payload, encoding="utf-8")
     output_js_path.write_text(js_payload, encoding="utf-8")
@@ -140,11 +120,11 @@ def main() -> int:
         if existing_json.exists():
             payload = json.loads(existing_json.read_text(encoding="utf-8"))
             write_outputs(project_root, payload)
-            print("Skipping remote update: missing GOOGLE_CALENDAR_API_KEY or GOOGLE_CALENDAR_ID")
+            print("Skipping remote update: missing Google Calendar credentials")
             print("Regenerated availability.js from existing availability.json")
             return 0
 
-        print("Skipping update: missing GOOGLE_CALENDAR_API_KEY or GOOGLE_CALENDAR_ID")
+        print("Skipping update: missing Google Calendar credentials")
         return 0
 
     try:
@@ -196,18 +176,10 @@ def main() -> int:
         "eventsByDate": sorted_events_by_date,
     }
 
-    public_calendar_config = {
-        "apiKey": api_key,
-        "calendarId": calendar_id,
-        "timeZone": calendar_time_zone_name,
-    }
+    write_outputs(project_root, payload)
 
-    write_outputs(project_root, payload, public_calendar_config)
-
-    output_path = project_root / "availability.json"
-    output_js_path = project_root / "availability.js"
-    print(f"Wrote {len(sorted_dates)} blocked dates to {output_path}")
-    print(f"Wrote availability snapshot to {output_js_path}")
+    print(f"Wrote {len(sorted_dates)} blocked dates to {project_root / 'availability.json'}")
+    print(f"Wrote public availability snapshot to {project_root / 'availability.js'}")
     return 0
 
 
