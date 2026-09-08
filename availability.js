@@ -1,6 +1,6 @@
 window.__ESTANCIA_AVAILABILITY__ = {
-  "updatedAt": "2026-09-08T00:39:58Z",
-  "updatedAtLocal": "2026-09-07T21:39:58-03:00",
+  "updatedAt": "2026-09-08T05:12:54Z",
+  "updatedAtLocal": "2026-09-08T02:12:54-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
   "blockedDates": [
@@ -18,17 +18,81 @@ window.__ESTANCIA_AVAILABILITY__ = {
     "2026-12-13"
   ],
   "eventsByDate": {
-    "2026-05-09": [{"allDay": true, "durationDays": 1}],
-    "2026-05-10": [{"allDay": false, "durationDays": 1}],
-    "2026-05-16": [{"allDay": true, "durationDays": 1}],
-    "2026-05-17": [{"allDay": false, "durationDays": 1}],
-    "2026-06-13": [{"allDay": true, "durationDays": 1}],
-    "2026-06-19": [{"allDay": true, "durationDays": 1}],
-    "2026-06-24": [{"allDay": true, "durationDays": 1}],
-    "2026-07-20": [{"allDay": true, "durationDays": 1}],
-    "2026-08-01": [{"allDay": true, "durationDays": 1}],
-    "2026-08-02": [{"allDay": false, "durationDays": 1}],
-    "2026-11-28": [{"allDay": true, "durationDays": 1}],
-    "2026-12-13": [{"allDay": true, "durationDays": 1}]
+    "2026-05-09": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      },
+      {
+        "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-05-10": [
+      {
+        "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-05-16": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-05-17": [
+      {
+        "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-06-13": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-06-19": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-06-24": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-07-20": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-08-01": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-08-02": [
+      {
+        "allDay": false,
+        "durationDays": 1
+      }
+    ],
+    "2026-11-28": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ],
+    "2026-12-13": [
+      {
+        "allDay": true,
+        "durationDays": 1
+      }
+    ]
   }
 };
