@@ -1,6 +1,6 @@
 window.__ESTANCIA_AVAILABILITY__ = {
-  "updatedAt": "2026-09-12T08:53:31Z",
-  "updatedAtLocal": "2026-09-12T05:53:31-03:00",
+  "updatedAt": "2026-09-12T12:26:00Z",
+  "updatedAtLocal": "2026-09-12T09:26:00-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
   "blockedDates": [
