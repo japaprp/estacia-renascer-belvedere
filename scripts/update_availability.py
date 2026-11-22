@@ -23,7 +23,7 @@ def parse_datetime(value: str) -> datetime:
     return dt
 
 
-def parse_event_range(event: Dict) -> Optional[Tuple[date, date, Dict]]:
+def parse_event_range(event: Dict, calendar_time_zone: ZoneInfo) -> Optional[Tuple[date, date]]:
     start = event.get("start", {})
     end = event.get("end", {})
 
@@ -32,12 +32,11 @@ def parse_event_range(event: Dict) -> Optional[Tuple[date, date, Dict]]:
         end_exclusive = date.fromisoformat(end["date"])
         if end_exclusive <= start_day:
             end_exclusive = start_day + timedelta(days=1)
-        duration = max(1, (end_exclusive - start_day).days)
-        return start_day, end_exclusive, {"allDay": True, "durationDays": duration}
+        return start_day, end_exclusive
 
     if "dateTime" in start and "dateTime" in end:
-        start_dt = parse_datetime(start["dateTime"])
-        end_dt = parse_datetime(end["dateTime"])
+        start_dt = parse_datetime(start["dateTime"]).astimezone(calendar_time_zone)
+        end_dt = parse_datetime(end["dateTime"]).astimezone(calendar_time_zone)
         start_day = start_dt.date()
         end_exclusive = end_dt.date()
 
@@ -46,8 +45,7 @@ def parse_event_range(event: Dict) -> Optional[Tuple[date, date, Dict]]:
         if end_exclusive <= start_day:
             end_exclusive = start_day + timedelta(days=1)
 
-        duration = max(1, (end_exclusive - start_day).days)
-        return start_day, end_exclusive, {"allDay": False, "durationDays": duration}
+        return start_day, end_exclusive
 
     return None
 
@@ -69,6 +67,7 @@ def fetch_events(
             "singleEvents": "true",
             "orderBy": "startTime",
             "maxResults": "2500",
+            "fields": "nextPageToken,items(status,start,end)",
             "timeMin": time_min,
             "timeMax": time_max,
             "timeZone": calendar_time_zone,
@@ -78,11 +77,10 @@ def fetch_events(
 
         url = f"{base}?{urlencode(params)}"
         try:
-            with urlopen(url) as response:
+            with urlopen(url, timeout=30) as response:
                 payload = json.loads(response.read().decode("utf-8"))
         except HTTPError as exc:
-            details = exc.read().decode("utf-8", errors="replace")
-            raise RuntimeError(f"Google Calendar API HTTP {exc.code}. Response: {details}") from exc
+            raise RuntimeError(f"Google Calendar API HTTP {exc.code}") from None
         except URLError as exc:
             raise RuntimeError(f"Google Calendar API network error: {exc.reason}") from exc
 
@@ -98,6 +96,8 @@ def write_outputs(project_root: Path, payload: Dict) -> None:
     output_path = project_root / "availability.json"
     output_js_path = project_root / "availability.js"
 
+    public_keys = ("updatedAt", "updatedAtLocal", "source", "sourceTimeZone", "rangeStart", "rangeEndExclusive", "blockedDates")
+    payload = {key: payload[key] for key in public_keys if key in payload}
     json_payload = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     js_payload = (
         "window.__ESTANCIA_AVAILABILITY__ = "
@@ -146,26 +146,23 @@ def main() -> int:
     )
 
     blocked_dates = set()
-    events_by_date: Dict[str, List[Dict]] = {}
 
     for event in events:
         if event.get("status") == "cancelled":
             continue
 
-        parsed = parse_event_range(event)
+        parsed = parse_event_range(event, calendar_time_zone)
         if not parsed:
             continue
 
-        start_day, end_exclusive, event_info = parsed
-        day = start_day
-        while day < end_exclusive:
+        start_day, end_exclusive = parsed
+        day = max(start_day, range_start.date())
+        while day < min(end_exclusive, range_end.date()):
             date_str = day.isoformat()
             blocked_dates.add(date_str)
-            events_by_date.setdefault(date_str, []).append(event_info)
             day += timedelta(days=1)
 
     sorted_dates = sorted(blocked_dates)
-    sorted_events_by_date = {key: events_by_date[key] for key in sorted(events_by_date.keys())}
 
     payload = {
         "updatedAt": iso_utc(datetime.now(timezone.utc)),
@@ -173,7 +170,8 @@ def main() -> int:
         "source": "availability-snapshot",
         "sourceTimeZone": calendar_time_zone_name,
         "blockedDates": sorted_dates,
-        "eventsByDate": sorted_events_by_date,
+        "rangeStart": range_start.date().isoformat(),
+        "rangeEndExclusive": range_end.date().isoformat(),
     }
 
     write_outputs(project_root, payload)

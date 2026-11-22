@@ -2,8 +2,17 @@ name: Update Availability
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/update_availability.py
+      - .github/workflows/update-availability.yml
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "3-58/5 * * * *"
+
+concurrency:
+  group: update-availability-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: write
