@@ -1,8 +1,10 @@
 {
-  "updatedAt": "2026-11-22T00:48:36Z",
-  "updatedAtLocal": "2026-11-21T21:48:36-03:00",
+  "updatedAt": "2026-11-22T05:39:49Z",
+  "updatedAtLocal": "2026-11-22T02:39:49-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
+  "rangeStart": "2025-11-22",
+  "rangeEndExclusive": "2028-11-21",
   "blockedDates": [
     "2026-05-09",
     "2026-05-10",
@@ -16,83 +18,5 @@
     "2026-08-02",
     "2026-11-28",
     "2026-12-13"
-  ],
-  "eventsByDate": {
-    "2026-05-09": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      },
-      {
-        "allDay": false,
-        "durationDays": 1
-      }
-    ],
-    "2026-05-10": [
-      {
-        "allDay": false,
-        "durationDays": 1
-      }
-    ],
-    "2026-05-16": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-05-17": [
-      {
-        "allDay": false,
-        "durationDays": 1
-      }
-    ],
-    "2026-06-13": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-06-19": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-06-24": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-07-20": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-08-01": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-08-02": [
-      {
-        "allDay": false,
-        "durationDays": 1
-      }
-    ],
-    "2026-11-28": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ],
-    "2026-12-13": [
-      {
-        "allDay": true,
-        "durationDays": 1
-      }
-    ]
-  }
+  ]
 }
