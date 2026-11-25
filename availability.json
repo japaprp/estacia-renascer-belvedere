@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-25T00:22:28Z",
-  "updatedAtLocal": "2026-11-24T21:22:28-03:00",
+  "updatedAt": "2026-11-25T08:55:50Z",
+  "updatedAtLocal": "2026-11-25T05:55:50-03:00",
   "source": "availability-snapshot",
   "sourceTimeZone": "America/Sao_Paulo",
-  "rangeStart": "2025-11-24",
-  "rangeEndExclusive": "2028-11-23",
+  "rangeStart": "2025-11-25",
+  "rangeEndExclusive": "2028-11-24",
   "blockedDates": [
     "2026-05-09",
     "2026-05-10",
